@@ -13,7 +13,11 @@ const links = [
 <nav class="nav" aria-label="Hauptnavigation">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Salsa Paderborn – Startseite">
-      <span class="logo-salsa">Salsa</span><span class="logo-paderborn">Paderborn</span>
+      <svg class="nav-logo-svg" viewBox="0 0 240 44" width="200" height="37" role="img" aria-hidden="true">
+        <text x="0" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="30" fill="#C62828" letter-spacing="-0.5">Salsa</text>
+        <text x="108" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="22" fill="#FFFFFF" letter-spacing="-0.3">Paderborn</text>
+        <rect x="0" y="34" width="42" height="3" rx="1.5" fill="#F5A623" opacity="0.85"/>
+      </svg>
     </a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" aria-hidden="true" />
     <label for="nav-toggle" class="nav-toggle-label" aria-label="Navigation umschalten">
@@ -57,21 +61,16 @@ const links = [
   }
 
   .nav-logo {
-    font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 700;
     text-decoration: none;
     flex-shrink: 0;
     display: flex;
-    gap: 0.3em;
+    align-items: center;
   }
 
-  .logo-salsa {
-    color: var(--color-primary);
-  }
-
-  .logo-paderborn {
-    color: var(--color-white);
+  .nav-logo-svg {
+    display: block;
+    height: 34px;
+    width: auto;
   }
 
   .nav-links {

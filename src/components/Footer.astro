@@ -5,8 +5,12 @@
   <div class="footer-inner">
     <div class="footer-main">
       <p class="footer-brand">
-        <a href="/" class="footer-brand-link">
-          <span class="footer-logo-salsa">Salsa</span><span class="footer-logo-paderborn">Paderborn</span>
+        <a href="/" class="footer-brand-link" aria-label="Salsa Paderborn – Startseite">
+          <svg class="footer-logo-svg" viewBox="0 0 240 44" width="200" height="37" role="img" aria-hidden="true">
+            <text x="0" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="30" fill="#C62828" letter-spacing="-0.5">Salsa</text>
+            <text x="108" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="22" fill="#FFFFFF" letter-spacing="-0.3">Paderborn</text>
+            <rect x="0" y="34" width="42" height="3" rx="1.5" fill="#F5A623" opacity="0.85"/>
+          </svg>
         </a>
       </p>
       <p class="footer-tagline">Dein Community-Portal für die Tanzszene in Paderborn und Umgebung</p>
@@ -50,20 +54,15 @@
   }
 
   .footer-brand-link {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 700;
     text-decoration: none;
     display: inline-flex;
-    gap: 0.3em;
+    align-items: center;
   }
 
-  .footer-logo-salsa {
-    color: var(--color-primary);
-  }
-
-  .footer-logo-paderborn {
-    color: var(--color-white);
+  .footer-logo-svg {
+    display: block;
+    height: 37px;
+    width: auto;
   }
 
   .footer-tagline {
