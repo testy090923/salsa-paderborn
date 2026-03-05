@@ -16,43 +16,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="contact-icon">💬</span>
           <h3>Allgemeine Fragen</h3>
           <p>Du hast eine Frage zu Events, Kursen oder der Plattform?</p>
-          <p class="contact-detail">info@salsa-paderborn.de</p>
+          <p class="contact-detail"><a href="mailto:info@salsa-paderborn.de">info@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
           <span class="contact-icon">🎤</span>
           <h3>Event eintragen</h3>
           <p>Du veranstaltest eine Party oder ein Festival in der Region?</p>
-          <p class="contact-detail">events@salsa-paderborn.de</p>
+          <p class="contact-detail"><a href="mailto:events@salsa-paderborn.de">events@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
           <span class="contact-icon">👩‍🏫</span>
           <h3>Als Lehrer:in mitmachen</h3>
           <p>Du unterrichtest und willst dich auf der Plattform präsentieren?</p>
-          <p class="contact-detail">lehrer@salsa-paderborn.de</p>
+          <p class="contact-detail"><a href="mailto:lehrer@salsa-paderborn.de">lehrer@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
           <span class="contact-icon">🏠</span>
           <h3>Tanzschule anmelden</h3>
           <p>Eure Schule oder euer Verein soll auf die Plattform?</p>
-          <p class="contact-detail">partner@salsa-paderborn.de</p>
+          <p class="contact-detail"><a href="mailto:partner@salsa-paderborn.de">partner@salsa-paderborn.de</a></p>
         </div>
 
       </div>
     </div>
   </section>
 
-  <section class="section section-warm">
-    <div class="container">
-      <div class="about-block">
-        <h2 class="section-title">Über Salsa Paderborn</h2>
-        <p>Salsa Paderborn ist ein Community-Projekt für die Tanzszene in Paderborn und Umgebung. Unser Ziel: Alle Infos rund um Salsa, Bachata und Kizomba an einem Ort – übersichtlich, aktuell und für alle zugänglich.</p>
-        <p>Die Plattform wird ehrenamtlich betrieben und steht allen Tänzer:innen, Lehrer:innen und Tanzschulen offen. Wir glauben daran, dass eine starke Szene von Zusammenarbeit lebt – nicht von Konkurrenz.</p>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -79,9 +70,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 600; color: var(--color-primary); font-size: 0.9rem;
     margin-top: var(--space-sm);
   }
-
-  .about-block { max-width: 600px; margin: 0 auto; text-align: center; }
-  .about-block p {
-    font-size: 0.95rem; color: #555; line-height: 1.6; margin-top: 1rem;
+  .contact-detail a {
+    color: inherit;
+    text-decoration: none;
   }
+  .contact-detail a:hover {
+    text-decoration: underline;
+  }
+
 </style>

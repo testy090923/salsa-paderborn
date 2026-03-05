@@ -16,7 +16,7 @@ const categoryColors: Record<string, string> = {
   Party: 'var(--color-secondary-terracotta)',
   Social: 'var(--color-primary)',
   Festival: 'var(--color-secondary-gold)',
-  Sonstiges: '#888',
+  Sonstiges: '#666',
 };
 
 // Level color coding for courses (brand colors)
@@ -44,7 +44,7 @@ function formatTime(isoDate: string): string {
 >
 
   <!-- Hero -->
-  <header class="hero">
+  <section class="hero" aria-label="Hero">
     <div class="hero-inner">
       <h1 class="hero-headline">Salsa in Paderborn?<br /><span class="hero-highlight">Oh ja.</span></h1>
       <p class="hero-sub">Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.</p>
@@ -53,7 +53,7 @@ function formatTime(isoDate: string): string {
         <a href="/kurse" class="btn btn-secondary-light">Tanzen lernen</a>
       </div>
     </div>
-  </header>
+  </section>
 
   <!-- Diese Woche Counter -->
   {(totalEvents > 0 || totalCourses > 0) && (
@@ -70,7 +70,7 @@ function formatTime(isoDate: string): string {
           </div>
           <div class="counter-item">
             <span class="counter-number">{totalTeachers + totalSchools}</span>
-            <span class="counter-label">Akteure</span>
+            <span class="counter-label">Szene</span>
           </div>
         </div>
         <p class="counter-note">In Paderborn und Umgebung</p>
@@ -118,7 +118,7 @@ function formatTime(isoDate: string): string {
                 </div>
                 <div class="event-info">
                   {event.category && (
-                    <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#888'}`}>{event.category}</span>
+                    <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#666'}; color: ${event.category === 'Festival' ? 'var(--color-neutral-dark)' : 'var(--color-white)'}`}>{event.category}</span>
                   )}
                   <h3>{event.title}</h3>
                   <p class="event-location">
@@ -151,7 +151,7 @@ function formatTime(isoDate: string): string {
                 </div>
                 <div class="event-info">
                   {kurs.level && (
-                    <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#888'}`}>{kurs.level}</span>
+                    <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#666'}`}>{kurs.level}</span>
                   )}
                   <h3>{kurs.title}</h3>
                   <p class="event-location">
@@ -269,7 +269,7 @@ function formatTime(isoDate: string): string {
   .counter-label {
     display: block;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-text-muted);
     margin-top: var(--space-xs);
     font-weight: 600;
   }
@@ -277,7 +277,7 @@ function formatTime(isoDate: string): string {
   .counter-note {
     text-align: center;
     font-size: 0.8rem;
-    color: #999;
+    color: #666;
     margin-top: var(--space-md);
   }
 
@@ -347,7 +347,7 @@ function formatTime(isoDate: string): string {
 
   .decision-content p {
     font-size: 0.95rem;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: var(--space-md);
     line-height: 1.5;
   }
@@ -414,7 +414,7 @@ function formatTime(isoDate: string): string {
   .event-time {
     display: block;
     font-size: 0.8rem;
-    color: #888;
+    color: #666;
   }
 
   .event-info {
@@ -442,7 +442,7 @@ function formatTime(isoDate: string): string {
 
   .event-location {
     font-size: 0.85rem;
-    color: #888;
+    color: #666;
   }
 
   /* ====== Community Teaser ====== */
@@ -453,7 +453,7 @@ function formatTime(isoDate: string): string {
 
   .community-text {
     font-size: 1.1rem;
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: var(--space-lg);
     line-height: 1.6;
   }

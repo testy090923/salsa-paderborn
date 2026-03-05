@@ -33,16 +33,16 @@ const levelColors: Record<string, string> = {
   'Fortgeschritten': 'var(--color-primary)',
   'Alle': 'var(--color-info)',
 };
-const tagColor = levelColors[course.level ?? ''] ?? '#888';
+const tagColor = levelColors[course.level ?? ''] ?? '#666';
 
 // Style color coding (Brand Guide)
 const styleColors: Record<string, string> = {
   'Salsa': 'var(--color-primary)',
   'Bachata': 'var(--color-secondary-terracotta)',
   'Kizomba': 'var(--color-info)',
-  'Sonstiges': '#888',
+  'Sonstiges': '#666',
 };
-const styleColor = styleColors[course.style ?? ''] ?? '#888';
+const styleColor = styleColors[course.style ?? ''] ?? '#666';
 
 // Format start date if available
 let formattedStartDate: string | null = null;
@@ -198,13 +198,15 @@ if (course.startDate) {
 
   .detail-image {
     width: 100%;
-    max-height: 400px;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
   }
   .detail-image :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    display: block;
   }
 
   .detail-body {
@@ -233,7 +235,7 @@ if (course.startDate) {
 
   .category-label {
     font-size: 0.7rem;
-    color: #888;
+    color: #666;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -341,7 +343,7 @@ if (course.startDate) {
   }
   .teacher-styles {
     font-size: 0.8rem;
-    color: #888;
+    color: #666;
   }
 
   .teacher-profile-link {

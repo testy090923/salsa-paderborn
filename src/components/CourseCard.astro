@@ -29,7 +29,7 @@ const levelColors: Record<string, string> = {
   'Fortgeschritten': 'var(--color-primary)',
   'Alle': 'var(--color-info)',
 };
-const tagColor = levelColors[course.level ?? ''] ?? '#888';
+const tagColor = levelColors[course.level ?? ''] ?? '#666';
 ---
 
 <a href={`/kurse/${course.slug.current}`} class="kurs-card-link">
@@ -68,7 +68,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
       <p class="kurs-desc">{course.description}</p>
     )}
     {course.partnerRequired === false && (
-      <span class="kurs-partner-info">Kein Partner noetig</span>
+      <span class="kurs-partner-info">Kein Partner nötig</span>
     )}
   </article>
 </a>
@@ -113,7 +113,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
 
   .kurs-category {
     font-size: 0.7rem;
-    color: #888;
+    color: #666;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -136,7 +136,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
 
   .kurs-meta {
     font-size: 0.85rem;
-    color: #888;
+    color: #666;
     margin-bottom: var(--space-xs);
   }
 
@@ -151,7 +151,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
 
   .kurs-school {
     font-size: 0.8rem;
-    color: #999;
+    color: #666;
     margin-bottom: var(--space-sm);
   }
 

@@ -164,3 +164,12 @@ const links = [
     }
   }
 </style>
+
+<script>
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const toggle = document.getElementById('nav-toggle') as HTMLInputElement | null;
+      if (toggle) toggle.checked = false;
+    });
+  });
+</script>

@@ -5,9 +5,15 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  url?: string;
 }
 
-const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa, Bachata & Kizomba in Paderborn und Umgebung' } = Astro.props;
+const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa, Bachata & Kizomba in Paderborn und Umgebung', image, url } = Astro.props;
+
+const siteUrl = 'https://salsa-paderborn.de';
+const canonicalUrl = url ?? `${siteUrl}${Astro.url.pathname}`;
+const ogImage = image ?? `${siteUrl}/og-default.png`;
 ---
 
 <!doctype html>
@@ -16,6 +22,18 @@ const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa,
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Self-hosted fonts (DSGVO-konform, kein Google CDN) -->
     <link rel="preload" href="/fonts/sansita-700-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -98,6 +116,10 @@ const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa,
         --color-neutral-light: #FAF7F2;
         --color-white: #FFFFFF;
 
+        /* Colors – Text */
+        --color-text-secondary: #555;
+        --color-text-muted: #666;
+
         /* Colors – Functional */
         --color-success: #2E7D32;
         --color-warning: #F9A825;
@@ -152,6 +174,36 @@ const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa,
         background: var(--color-neutral-light);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ==========================================================================
+         Accessibility: Focus Styles
+         ========================================================================== */
+
+      :focus-visible {
+        outline: 3px solid var(--color-secondary-gold);
+        outline-offset: 2px;
+      }
+
+      /* ==========================================================================
+         Accessibility: Skip Link
+         ========================================================================== */
+
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        padding: 8px 16px;
+        background: var(--color-primary);
+        color: var(--color-white);
+        z-index: 200;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .skip-link:focus {
+        top: 0;
       }
 
       /* Headings – all use Sansita */
@@ -250,7 +302,7 @@ const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa,
 
       .section-sub {
         text-align: center;
-        color: #666;
+        color: var(--color-text-muted);
         font-size: 1rem;
         margin-bottom: var(--space-xl);
       }
@@ -369,15 +421,16 @@ const { title, description = 'Salsa Paderborn – Deine Anlaufstelle für Salsa,
 
       .empty-state {
         text-align: center;
-        color: #888;
+        color: var(--color-text-muted);
         font-size: 0.95rem;
         padding: var(--space-2xl) 0;
       }
     </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
     <Nav />
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
