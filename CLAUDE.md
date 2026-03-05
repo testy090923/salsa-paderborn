@@ -39,20 +39,26 @@ salsa-web-agency/
 │   ├── brand.md           ← Markenentscheidungen
 │   ├── sitemap.md         ← Seitenstruktur
 │   └── meeting-notes.md   ← Meeting-Protokoll
+├── briefings/             ← Briefing-Dokumente fuer direkte Agent-Sessions
 ├── progress/
 │   ├── build-log.md       ← Was gebaut ist, was offen ist
-│   └── decisions.md       ← Entscheidungen + Begründungen
+│   └── decisions.md       ← Entscheidungen + Begruendungen
 ├── knowledge/
 │   └── astro-patterns.md  ← Astro Best Practices
 └── src/                   ← Astro-Projekt (wird initialisiert)
 ```
 
 ## Agenten
-- **Discovery** – Begleitet Live-Kundengespräche, formuliert niederschwellige Fragen, erfasst Anforderungen
-- **Brand Strategist** – Entwickelt Positionierung, Zielgruppe, Messaging, Farbwelt, Typografie, Tone of Voice
-- **Astro Builder** – Setzt alles technisch um: Komponenten, Layouts, Pages, Responsive, Netlify-Deployment
-- **Content Architect** – Plant Seitenstruktur, schreibt Texte, optimiert für SEO, entwickelt Bildkonzepte
-- **QA Reviewer** – Prüft Accessibility, Performance, Mobile, Cross-Browser, Lighthouse-Scores
+
+| Agent | Zustaendigkeit | Modus |
+|-------|---------------|-------|
+| **Discovery** | Begleitet Live-Kundengespraeche, formuliert niederschwellige Fragen, erfasst Anforderungen | delegiert + direkt |
+| **Brand Strategist** | Entwickelt Positionierung, Zielgruppe, Messaging, Farbwelt, Typografie, Tone of Voice | delegiert |
+| **Astro Builder** | Setzt alles technisch um: Komponenten, Layouts, Pages, Responsive, Netlify-Deployment | delegiert |
+| **Content Architect** | Plant Seitenstruktur, schreibt Texte, optimiert fuer SEO, entwickelt Bildkonzepte | delegiert |
+| **QA Reviewer** | Prueft Accessibility, Performance, Mobile, Cross-Browser, Lighthouse-Scores | delegiert |
+
+**Direkt-Modus:** Der Discovery Agent kann als eigenstaendige Claude-Session gestartet werden (`scripts/discovery`) – fuer Live-Meeting-Begleitung mit dem Klienten. Der Agency Director empfiehlt das bei Bedarf und schreibt vorher ein Briefing unter `briefings/`.
 
 ## Skills
 - `/meeting` – Meeting-Modus starten, Discovery Agent für Live-Begleitung aktivieren

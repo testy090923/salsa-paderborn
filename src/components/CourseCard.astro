@@ -1,9 +1,7 @@
 ---
 /**
  * CourseCard -- Reusable card for the course listing page.
- *
- * Based on the kurs-card pattern from kurse.astro.
- * Expects a Sanity course object with fields matching allCoursesQuery.
+ * Styled according to Brand Guide: Sansita headings, brand colors, card shadows.
  */
 interface Props {
   course: {
@@ -24,12 +22,12 @@ interface Props {
 
 const { course } = Astro.props;
 
-// Level color coding
+// Level color coding (Brand Guide)
 const levelColors: Record<string, string> = {
-  'Anfänger': '#27ae60',
-  'Mittelstufe': '#e67e22',
-  'Fortgeschritten': '#e74c3c',
-  'Alle': '#3498db',
+  'Anfänger': 'var(--color-success)',
+  'Mittelstufe': 'var(--color-secondary-terracotta)',
+  'Fortgeschritten': 'var(--color-primary)',
+  'Alle': 'var(--color-info)',
 };
 const tagColor = levelColors[course.level ?? ''] ?? '#888';
 ---
@@ -70,7 +68,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
       <p class="kurs-desc">{course.description}</p>
     )}
     {course.partnerRequired === false && (
-      <span class="kurs-partner-info">Kein Partner nötig</span>
+      <span class="kurs-partner-info">Kein Partner noetig</span>
     )}
   </article>
 </a>
@@ -83,29 +81,31 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
   }
 
   .kurs-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
   }
+
   .kurs-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
   .kurs-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.3rem;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
   }
 
   .kurs-tag {
     display: inline-block;
-    color: white;
+    color: var(--color-white);
     font-size: 0.7rem;
     font-weight: 600;
-    padding: 0.15rem 0.5rem;
+    padding: 2px var(--space-sm);
     border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -120,28 +120,31 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
   }
 
   .kurs-card h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 0.15rem;
+    margin-bottom: 2px;
+    color: var(--color-neutral-dark);
   }
 
   .kurs-schedule {
     font-size: 0.85rem;
     font-weight: 600;
     color: #444;
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--space-xs);
   }
 
   .kurs-meta {
     font-size: 0.85rem;
     color: #888;
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--space-xs);
   }
 
   .kurs-teacher-link {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
   }
+
   .kurs-teacher-link:hover {
     text-decoration: underline;
   }
@@ -149,7 +152,7 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
   .kurs-school {
     font-size: 0.8rem;
     color: #999;
-    margin-bottom: 0.4rem;
+    margin-bottom: var(--space-sm);
   }
 
   .kurs-desc {
@@ -162,10 +165,10 @@ const tagColor = levelColors[course.level ?? ''] ?? '#888';
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #27ae60;
-    background: #eafaf1;
-    padding: 0.15rem 0.5rem;
+    color: var(--color-success);
+    background: rgba(46, 125, 50, 0.08);
+    padding: 2px var(--space-sm);
     border-radius: 4px;
-    margin-top: 0.5rem;
+    margin-top: var(--space-sm);
   }
 </style>

@@ -1,9 +1,7 @@
 ---
 /**
- * EventCard – Full event card for listing pages.
- *
- * Based on the event-card-full pattern from events.astro.
- * Expects a Sanity event object with fields matching allEventsQuery.
+ * EventCard -- Full event card for listing pages.
+ * Styled according to Brand Guide: Sansita headings, brand colors, card shadows.
  */
 interface Props {
   event: {
@@ -36,14 +34,16 @@ const formattedTime = dateObj.toLocaleTimeString('de-DE', {
   minute: '2-digit',
 });
 
-// Category color coding
+// Category color coding (Brand Guide)
 const categoryColors: Record<string, string> = {
-  Party: '#e74c3c',
-  Social: '#9b59b6',
-  Festival: '#e67e22',
+  Party: 'var(--color-secondary-terracotta)',
+  Social: 'var(--color-primary)',
+  Festival: 'var(--color-secondary-gold)',
   Sonstiges: '#888',
 };
 const tagColor = categoryColors[event.category ?? ''] ?? '#888';
+// Gold badge needs dark text for contrast
+const tagTextColor = event.category === 'Festival' ? 'var(--color-neutral-dark)' : 'var(--color-white)';
 ---
 
 <a href={`/events/${event.slug.current}`} class="event-card-link">
@@ -54,7 +54,7 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
     </div>
     <div class="event-content">
       {event.category && (
-        <span class="event-tag" style={`background: ${tagColor}`}>{event.category}</span>
+        <span class="event-tag" style={`background: ${tagColor}; color: ${tagTextColor}`}>{event.category}</span>
       )}
       <h3>{event.title}</h3>
       <p class="event-location">
@@ -82,78 +82,91 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
 
   .event-card-full {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-lg);
     align-items: flex-start;
-    background: white;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
   }
+
   .event-card-full:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
   .event-date-block {
     min-width: 110px;
     flex-shrink: 0;
   }
+
   .event-day {
     display: block;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 0.95rem;
+    color: var(--color-neutral-dark);
   }
+
   .event-time {
     display: block;
     font-size: 0.8rem;
     color: #888;
+    margin-top: 2px;
   }
 
   .event-content {
     flex: 1;
   }
+
   .event-tag {
     display: inline-block;
-    color: white;
     font-size: 0.7rem;
     font-weight: 600;
-    padding: 0.15rem 0.5rem;
+    padding: 2px var(--space-sm);
     border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.3rem;
+    margin-bottom: var(--space-xs);
   }
+
   .event-content h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 0.15rem;
+    margin-bottom: 2px;
+    color: var(--color-neutral-dark);
   }
+
   .event-location {
     font-size: 0.85rem;
     color: #888;
-    margin-bottom: 0.4rem;
+    margin-bottom: var(--space-sm);
   }
+
   .event-desc {
     font-size: 0.9rem;
     color: #555;
     line-height: 1.5;
   }
+
   .event-price {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #e74c3c;
-    margin-top: 0.3rem;
+    color: var(--color-primary);
+    margin-top: var(--space-xs);
   }
+
   .event-organizer {
     font-size: 0.8rem;
     color: #999;
-    margin-top: 0.25rem;
+    margin-top: var(--space-xs);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .event-card-full {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: var(--space-sm);
     }
   }
 </style>

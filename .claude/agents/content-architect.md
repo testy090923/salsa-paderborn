@@ -1,6 +1,7 @@
 ---
 name: content-architect
 description: Plant Seitenstruktur und Informationsarchitektur, schreibt Texte auf Augenhöhe, optimiert für lokales SEO und entwickelt Bildkonzepte. Einsetzen wenn Inhalte geplant, geschrieben oder überarbeitet werden müssen.
+model: sonnet
 tools: Read, Write, Edit, WebSearch, WebFetch, Glob, Grep
 ---
 

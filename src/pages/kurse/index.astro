@@ -7,30 +7,56 @@ import { allCoursesQuery } from '../../lib/queries';
 const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
 ---
 
-<BaseLayout title="Kurse & Workshops – Salsa Paderborn">
+<BaseLayout
+  title="Salsa Kurs Paderborn – Anfänger bis Fortgeschrittene | Bachata & Kizomba"
+  description="Salsa tanzen lernen in Paderborn. Anfängerkurse, Workshops und Bootcamps für Salsa, Bachata und Kizomba. Kein Partner nötig. Jetzt Kurs finden!"
+>
   <div class="page-header">
-    <h1>Kurse & Workshops</h1>
-    <p>Tanzen lernen in Paderborn – Anfänger bis Fortgeschrittene, Salsa, Bachata & Kizomba</p>
+    <h1>Tanzen lernen in Paderborn</h1>
+    <p>Anfänger bis Fortgeschrittene – Salsa, Bachata & Kizomba</p>
   </div>
 
-  <!-- Tanzstile -->
+  <!-- FAQ Block -->
   <section class="section">
+    <div class="container">
+      <h2 class="section-title">Häufige Fragen</h2>
+      <p class="section-sub">Die Antworten auf die wichtigsten Fragen rund ums Tanzen lernen</p>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-question">Brauche ich einen Tanzpartner?</summary>
+          <p class="faq-answer">Nein. Die meisten Kurse funktionieren ohne festen Partner. Du wechselst während des Kurses die Tanzpartner:innen – so lernst du gleich verschiedene Führungs- und Folge-Stile kennen.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">Was ziehe ich an?</summary>
+          <p class="faq-answer">Bequeme Kleidung und saubere Schuhe mit glatter Sohle. Tanzschuhe sind optional – viele tanzen am Anfang in Socken oder Sneakern.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">Muss ich Vorkenntnisse haben?</summary>
+          <p class="faq-answer">Nein! Anfängerkurse starten bei Null. Du musst nur Lust mitbringen.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">Was kostet ein Kurs?</summary>
+          <p class="faq-answer">Die meisten Kurse in Paderborn kosten zwischen 10-15 Euro pro Einzelstunde oder 40-80 Euro im Monat. Genaue Preise findest du bei jedem Kurs.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tanzstile -->
+  <section class="section section-alt">
     <div class="container">
       <h2 class="section-title">Welcher Tanzstil passt zu dir?</h2>
       <p class="section-sub">Jeder Stil hat seinen eigenen Charakter – probier aus, was dich anspricht</p>
       <div class="style-grid">
         <div class="style-card">
-          <span class="style-emoji">💃</span>
           <h3>Salsa</h3>
           <p>Der Klassiker – lebhaft, sozial, macht süchtig. Getanzt auf energiegeladene Musik mit afrokubanischen Wurzeln.</p>
         </div>
         <div class="style-card">
-          <span class="style-emoji">🎶</span>
           <h3>Bachata</h3>
           <p>Sinnlich, melodisch, perfekt für Einsteiger. Aus der Dominikanischen Republik in die ganze Welt.</p>
         </div>
         <div class="style-card">
-          <span class="style-emoji">🌙</span>
           <h3>Kizomba</h3>
           <p>Smooth, verbindend, voller Gefühl. Aus Angola und Kap Verde – der entspannteste Latin-Tanz.</p>
         </div>
@@ -39,7 +65,7 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
   </section>
 
   <!-- Kursliste -->
-  <section class="section section-warm">
+  <section class="section">
     <div class="container">
       <h2 class="section-title">Aktuelle Kurse & Workshops</h2>
       <p class="section-sub">Alle Angebote in Paderborn und Umgebung</p>
@@ -57,23 +83,108 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
 </BaseLayout>
 
 <style>
-  .style-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem;
+  /* ====== FAQ ====== */
+  .faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
-  .style-card {
-    background: white; border-radius: 12px; padding: 1.5rem;
-    text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+
+  .faq-item {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
   }
-  .style-emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-  .style-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-  .style-card p { font-size: 0.85rem; color: #666; line-height: 1.5; }
 
-  .kurs-list { display: flex; flex-direction: column; gap: 1rem; }
+  .faq-question {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: var(--space-md) var(--space-lg);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    transition: color 200ms ease-in-out;
+    color: var(--color-neutral-dark);
+  }
 
-  .empty-state {
-    text-align: center;
-    color: #888;
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-primary);
+    flex-shrink: 0;
+    transition: transform 200ms ease-in-out;
+  }
+
+  .faq-item[open] .faq-question::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-item[open] .faq-question {
+    color: var(--color-primary);
+  }
+
+  .faq-answer {
+    padding: 0 var(--space-lg) var(--space-lg);
     font-size: 0.95rem;
-    padding: 3rem 0;
+    line-height: 1.7;
+    color: #555;
+  }
+
+  /* ====== Dance Style Cards ====== */
+  .section-alt {
+    background: var(--color-white);
+  }
+
+  .style-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .style-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .style-card {
+    background: var(--color-neutral-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    text-align: center;
+    box-shadow: var(--shadow-card);
+  }
+
+  .style-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+  }
+
+  .style-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* ====== Course List ====== */
+  .kurs-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
 </style>

@@ -1,6 +1,7 @@
 ---
 name: brand-strategist
 description: Entwickelt Markenpositionierung, Zielgruppenanalyse, Messaging, Tone of Voice, Farbwelt, Typografie und Visual Identity für den Salsa-Verein. Einsetzen wenn grundlegende Markenentscheidungen anstehen oder die visuelle Richtung definiert werden muss.
+model: sonnet
 tools: Read, Write, Edit, WebSearch, WebFetch, Glob, Grep
 ---
 

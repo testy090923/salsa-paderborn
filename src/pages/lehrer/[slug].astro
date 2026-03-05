@@ -28,12 +28,12 @@ if (!teacher) {
   return Astro.redirect('/lehrer');
 }
 
-// Level color coding for course list items
+// Level color coding (Brand Guide)
 const levelColors: Record<string, string> = {
-  'Anfänger': '#27ae60',
-  'Mittelstufe': '#e67e22',
-  'Fortgeschritten': '#e74c3c',
-  'Alle': '#3498db',
+  'Anfänger': 'var(--color-success)',
+  'Mittelstufe': 'var(--color-secondary-terracotta)',
+  'Fortgeschritten': 'var(--color-primary)',
+  'Alle': 'var(--color-info)',
 };
 ---
 
@@ -164,7 +164,7 @@ const levelColors: Record<string, string> = {
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     margin-bottom: 1.5rem;
   }
@@ -193,7 +193,7 @@ const levelColors: Record<string, string> = {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    background: var(--gradient-hero);
     color: white;
     font-size: 3rem;
     font-weight: 700;
@@ -217,8 +217,8 @@ const levelColors: Record<string, string> = {
     font-weight: 600;
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
-    background: #fde8e8;
-    color: #e74c3c;
+    background: rgba(198, 40, 40, 0.08);
+    color: var(--color-primary);
   }
   .meta-tag a {
     color: inherit;
@@ -235,7 +235,7 @@ const levelColors: Record<string, string> = {
   }
 
   .profile-content h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 1.4rem;
     margin-bottom: 0.5rem;
     margin-top: 0;
@@ -250,7 +250,7 @@ const levelColors: Record<string, string> = {
     margin-bottom: 0.75rem;
   }
   .bio-text :global(a) {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
@@ -274,7 +274,7 @@ const levelColors: Record<string, string> = {
     background: #faf9f7;
     border-radius: 8px;
     padding: 1rem;
-    border-left: 3px solid #e74c3c;
+    border-left: 3px solid var(--color-primary);
     transition: box-shadow 0.2s;
   }
   .kurs-item:hover {
@@ -312,8 +312,8 @@ const levelColors: Record<string, string> = {
     display: inline-block;
     font-size: 0.7rem;
     font-weight: 600;
-    color: #9b59b6;
-    background: #f5eeff;
+    color: var(--color-secondary-terracotta);
+    background: rgba(230, 81, 0, 0.08);
     padding: 0.1rem 0.4rem;
     border-radius: 3px;
     margin-top: 0.3rem;
@@ -329,7 +329,7 @@ const levelColors: Record<string, string> = {
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
   }
   .contact-link:hover {

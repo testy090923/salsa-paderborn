@@ -1,9 +1,7 @@
 ---
 /**
  * SchoolCard -- Reusable card for the dance school listing page.
- *
- * Based on the school-card pattern from tanzschulen.astro.
- * Expects a Sanity danceSchool object with fields matching allSchoolsQuery.
+ * Styled according to Brand Guide: Sansita headings, brand colors, card shadows.
  */
 import SanityImage from './SanityImage.astro';
 
@@ -86,22 +84,24 @@ const descExcerpt = getDescExcerpt(school.description);
 
   .school-card {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-lg);
     align-items: flex-start;
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
   }
+
   .school-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
   .school-logo-img {
     width: 64px;
     height: 64px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     flex-shrink: 0;
     object-fit: cover;
   }
@@ -109,10 +109,11 @@ const descExcerpt = getDescExcerpt(school.description);
   .school-logo-fallback {
     width: 64px;
     height: 64px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     flex-shrink: 0;
-    background: #e74c3c;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
     display: flex;
@@ -123,53 +124,61 @@ const descExcerpt = getDescExcerpt(school.description);
   .school-content {
     flex: 1;
   }
+
   .school-content h3 {
+    font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 0.15rem;
+    margin-bottom: 2px;
+    color: var(--color-neutral-dark);
   }
+
   .school-focus {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #8e44ad;
-    margin-bottom: 0.1rem;
+    color: var(--color-secondary-terracotta);
+    margin-bottom: 2px;
   }
+
   .school-location {
     font-size: 0.8rem;
     color: #999;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-sm);
   }
+
   .school-desc {
     font-size: 0.9rem;
     color: #555;
     line-height: 1.5;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-md);
   }
 
   .school-angebot {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 0.75rem;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
   }
+
   .angebot-tag {
     font-size: 0.75rem;
-    background: #f0f0f0;
-    padding: 0.2rem 0.6rem;
+    background: var(--color-neutral-light);
+    padding: 2px var(--space-sm);
     border-radius: 4px;
-    color: #555;
+    color: var(--color-neutral-dark);
   }
 
   .school-link-text {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #8e44ad;
+    color: var(--color-primary);
   }
+
   .school-card:hover .school-link-text {
     text-decoration: underline;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .school-card {
       flex-direction: column;
       align-items: center;

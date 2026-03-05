@@ -1,6 +1,7 @@
 ---
 name: astro-builder
 description: Technische Umsetzung der Website im Astro-Framework. Baut Komponenten, Layouts, Pages, implementiert Responsive Design und konfiguriert Netlify-Deployment. Einsetzen für alles Technische – vom Projekt-Setup bis zum Feature-Bau.
+model: sonnet
 tools: Read, Write, Edit, Bash, Glob, Grep, WebSearch, WebFetch
 ---
 

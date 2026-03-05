@@ -58,11 +58,11 @@ const shortStartDate = dateObj.toLocaleDateString('de-DE', {
   month: 'long',
 });
 
-// Category color coding (matching EventCard)
+// Category color coding (Brand Guide)
 const categoryColors: Record<string, string> = {
-  Party: '#e74c3c',
-  Social: '#9b59b6',
-  Festival: '#e67e22',
+  Party: 'var(--color-secondary-terracotta)',
+  Social: 'var(--color-primary)',
+  Festival: 'var(--color-secondary-gold)',
   Sonstiges: '#888',
 };
 const tagColor = categoryColors[event.category ?? ''] ?? '#888';
@@ -161,19 +161,19 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
   }
   .back-link:hover {
     text-decoration: underline;
   }
 
   .detail-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-card);
   }
 
   .detail-image {
@@ -210,10 +210,10 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: #faf9f7;
-    border-radius: 8px;
+    margin-bottom: var(--space-lg);
+    padding: var(--space-md);
+    background: var(--color-neutral-light);
+    border-radius: var(--radius-sm);
   }
 
   .meta-row {
@@ -234,10 +234,10 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
   }
   .meta-value.price {
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
   }
   .meta-value a {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
@@ -267,7 +267,7 @@ const tagColor = categoryColors[event.category ?? ''] ?? '#888';
     font-weight: 600;
   }
   .detail-richtext :global(a) {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }

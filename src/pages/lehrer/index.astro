@@ -51,14 +51,14 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
 
   .cta-card {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--space-lg);
     align-items: flex-start;
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    border: 2px dashed #ccc;
-    margin-top: 1.5rem;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-card);
+    border: 2px dashed rgba(26, 26, 46, 0.2);
+    margin-top: var(--space-lg);
   }
 
   .cta-avatar {
@@ -66,8 +66,9 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
     height: 80px;
     border-radius: 50%;
     flex-shrink: 0;
-    background: #f0f0f0;
+    background: var(--color-neutral-light);
     color: #aaa;
+    font-family: var(--font-heading);
     font-size: 2rem;
     font-weight: 700;
     display: flex;
@@ -76,10 +77,10 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
   }
 
   .cta-content { flex: 1; }
-  .cta-content h2 { font-size: 1.3rem; margin-bottom: 0.2rem; }
-  .cta-styles { font-size: 0.9rem; color: #27ae60; font-weight: 600; margin-bottom: 0.15rem; }
-  .cta-bio { font-size: 0.95rem; color: #555; margin-bottom: 0.75rem; line-height: 1.5; }
-  .cta-link { font-size: 0.9rem; font-weight: 600; color: #27ae60; text-decoration: none; }
+  .cta-content h2 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 2px; }
+  .cta-styles { font-size: 0.9rem; color: var(--color-secondary-terracotta); font-weight: 600; margin-bottom: 2px; }
+  .cta-bio { font-size: 0.95rem; color: #555; margin-bottom: var(--space-md); line-height: 1.5; }
+  .cta-link { font-size: 0.9rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
   .cta-link:hover { text-decoration: underline; }
 
   @media (max-width: 600px) {

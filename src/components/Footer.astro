@@ -4,77 +4,125 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-main">
-      <p class="footer-brand">Salsa Paderborn</p>
-      <p class="footer-tagline">Ein Community-Projekt für die Tanzszene in Paderborn und Umgebung</p>
+      <p class="footer-brand">
+        <a href="/" class="footer-brand-link">
+          <span class="footer-logo-salsa">Salsa</span><span class="footer-logo-paderborn">Paderborn</span>
+        </a>
+      </p>
+      <p class="footer-tagline">Dein Community-Portal für die Tanzszene in Paderborn und Umgebung</p>
     </div>
-    <div class="footer-links">
+    <nav class="footer-links" aria-label="Footer-Navigation">
       <a href="/events">Events</a>
       <a href="/kurse">Kurse</a>
       <a href="/lehrer">Lehrer:innen</a>
       <a href="/tanzschulen">Tanzschulen</a>
       <a href="/news">News</a>
       <a href="/kontakt">Kontakt</a>
+    </nav>
+    <div class="footer-legal">
+      <a href="/impressum">Impressum</a>
+      <a href="/datenschutz">Datenschutz</a>
     </div>
-    <p class="footer-small">Du veranstaltest Events oder unterrichtest? <a href="/kontakt">Melde dich bei uns</a></p>
+    <p class="footer-cta">Du veranstaltest Events oder unterrichtest? <a href="/kontakt">Melde dich bei uns.</a></p>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: #1a1a2e;
-    color: rgba(255,255,255,0.7);
-    padding: 3rem 1.5rem 2rem;
+    background: var(--color-neutral-dark);
+    color: rgba(255, 255, 255, 0.7);
+    padding: var(--space-2xl) var(--space-md) var(--space-xl);
     font-size: 0.9rem;
   }
 
   .footer-inner {
-    max-width: 800px;
+    max-width: 1024px;
     margin: 0 auto;
     text-align: center;
   }
 
+  .footer-main {
+    margin-bottom: var(--space-lg);
+  }
+
   .footer-brand {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .footer-brand-link {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
     font-weight: 700;
-    color: white;
-    margin-bottom: 0.25rem;
+    text-decoration: none;
+    display: inline-flex;
+    gap: 0.3em;
+  }
+
+  .footer-logo-salsa {
+    color: var(--color-primary);
+  }
+
+  .footer-logo-paderborn {
+    color: var(--color-white);
   }
 
   .footer-tagline {
-    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
   }
 
   .footer-links {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .footer-links a {
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 200ms ease-in-out;
   }
 
   .footer-links a:hover {
-    color: white;
+    color: var(--color-white);
   }
 
-  .footer-small {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.4);
+  .footer-legal {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
   }
 
-  .footer-small a {
-    color: #ffd6a5;
+  .footer-legal a {
+    color: rgba(255, 255, 255, 0.4);
     text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 200ms ease-in-out;
   }
 
-  .footer-small a:hover {
+  .footer-legal a:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .footer-cta {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .footer-cta a {
+    color: var(--color-secondary-gold);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer-cta a:hover {
     text-decoration: underline;
   }
 </style>

@@ -1,9 +1,7 @@
 ---
 /**
  * BlogCard -- Reusable card for the blog/news listing page.
- *
- * Card with image on top, content below. Follows the warm/neutral design system.
- * Expects a Sanity blogPost object with fields matching allBlogPostsQuery.
+ * Styled according to Brand Guide: Sansita headings, brand colors, card shadows.
  */
 import SanityImage from './SanityImage.astro';
 
@@ -82,14 +80,15 @@ if (post.publishedAt) {
   }
 
   .blog-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s, transform 0.2s;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
   }
+
   .blog-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 
@@ -97,7 +96,7 @@ if (post.publishedAt) {
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: #f0f0f0;
+    background: var(--color-neutral-light);
   }
 
   .blog-img {
@@ -110,39 +109,41 @@ if (post.publishedAt) {
   .blog-img-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: white;
+    background: var(--gradient-hero);
+    color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
     font-weight: 700;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     opacity: 0.8;
   }
 
   .blog-card-body {
-    padding: 1.25rem 1.5rem;
+    padding: var(--space-lg);
   }
 
   .blog-date {
     font-size: 0.8rem;
     color: #888;
-    margin-bottom: 0.4rem;
+    margin-bottom: var(--space-sm);
   }
 
   .blog-card-body h3 {
-    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 0.4rem;
+    margin-bottom: var(--space-sm);
     line-height: 1.3;
+    color: var(--color-neutral-dark);
   }
 
   .blog-excerpt {
     font-size: 0.9rem;
     color: #555;
     line-height: 1.5;
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-md);
     /* Clamp to 3 lines */
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -155,20 +156,21 @@ if (post.publishedAt) {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-sm);
   }
 
   .blog-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: var(--space-xs);
   }
+
   .blog-tag {
     font-size: 0.7rem;
-    background: #f0f0f0;
-    padding: 0.15rem 0.5rem;
+    background: var(--color-neutral-light);
+    padding: 2px var(--space-sm);
     border-radius: 4px;
-    color: #555;
+    color: var(--color-neutral-dark);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     font-weight: 600;

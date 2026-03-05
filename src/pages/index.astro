@@ -6,21 +6,25 @@ import { homepageQuery } from '../lib/queries';
 const data = await sanityClient.fetch(homepageQuery);
 const events = data?.events ?? [];
 const courses = data?.courses ?? [];
+const totalEvents = data?.totalEvents ?? 0;
+const totalCourses = data?.totalCourses ?? 0;
+const totalTeachers = data?.totalTeachers ?? 0;
+const totalSchools = data?.totalSchools ?? 0;
 
-// Category color coding for events
+// Category color coding for events (brand colors)
 const categoryColors: Record<string, string> = {
-  Party: '#e74c3c',
-  Social: '#9b59b6',
-  Festival: '#e67e22',
+  Party: 'var(--color-secondary-terracotta)',
+  Social: 'var(--color-primary)',
+  Festival: 'var(--color-secondary-gold)',
   Sonstiges: '#888',
 };
 
-// Level color coding for courses
+// Level color coding for courses (brand colors)
 const levelColors: Record<string, string> = {
-  'Anfänger': '#27ae60',
-  'Mittelstufe': '#e67e22',
-  'Fortgeschritten': '#e74c3c',
-  'Alle': '#3498db',
+  'Anfänger': 'var(--color-success)',
+  'Mittelstufe': 'var(--color-secondary-terracotta)',
+  'Fortgeschritten': 'var(--color-primary)',
+  'Alle': 'var(--color-info)',
 };
 
 // Format date in German locale
@@ -34,66 +38,95 @@ function formatTime(isoDate: string): string {
 }
 ---
 
-<BaseLayout title="Salsa Paderborn – Salsa, Bachata & Kizomba">
+<BaseLayout
+  title="Salsa Paderborn – Partys, Kurse & Events für Salsa, Bachata & Kizomba"
+  description="Was läuft diese Woche in Paderborn? Finde Salsa-Partys, Bachata-Kurse und Kizomba-Events in deiner Nähe. Dein Community-Portal für Latin Dance."
+>
 
   <!-- Hero -->
   <header class="hero">
     <div class="hero-inner">
-      <p class="hero-label">Paderborn & Umgebung</p>
-      <h1>Salsa Paderborn</h1>
-      <p class="hero-sub">Deine Anlaufstelle für Salsa, Bachata & Kizomba</p>
+      <h1 class="hero-headline">Salsa in Paderborn?<br /><span class="hero-highlight">Oh ja.</span></h1>
+      <p class="hero-sub">Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.</p>
       <div class="hero-cta">
-        <a href="/events" class="btn btn-primary">Was läuft diese Woche?</a>
-        <a href="/kurse" class="btn btn-secondary">Ich will tanzen lernen</a>
+        <a href="/events" class="btn btn-primary">Events entdecken</a>
+        <a href="/kurse" class="btn btn-secondary-light">Tanzen lernen</a>
       </div>
     </div>
   </header>
 
-  <!-- Entscheidung -->
-  <section class="section decision-section">
+  <!-- Diese Woche Counter -->
+  {(totalEvents > 0 || totalCourses > 0) && (
+    <section class="counter-section">
+      <div class="container">
+        <div class="counter-grid">
+          <div class="counter-item">
+            <span class="counter-number">{totalEvents}</span>
+            <span class="counter-label">{totalEvents === 1 ? 'Event' : 'Events'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalCourses}</span>
+            <span class="counter-label">{totalCourses === 1 ? 'Kurs' : 'Kurse'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalTeachers + totalSchools}</span>
+            <span class="counter-label">Akteure</span>
+          </div>
+        </div>
+        <p class="counter-note">In Paderborn und Umgebung</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Einstiegs-Weiche -->
+  <section class="section">
     <div class="container">
       <h2 class="section-title">Was suchst du?</h2>
-      <p class="section-sub">Wähle deinen Einstieg – wir zeigen dir, was du brauchst</p>
+      <p class="section-sub">Dein Einstieg in die Szene – wähle, was zu dir passt</p>
       <div class="decision-grid">
         <a href="/events" class="decision-card decision-ausgehen">
-          <span class="decision-icon">🎉</span>
-          <h3>Ich will tanzen gehen</h3>
-          <p>Partys, Social Dances & Events in deiner Nähe</p>
-          <span class="decision-arrow">Zu den Events &rarr;</span>
+          <div class="decision-content">
+            <h3>Ich will tanzen gehen</h3>
+            <p>Partys, Social Dances & Events in deiner Nähe</p>
+            <span class="decision-arrow">Zu den Events &rarr;</span>
+          </div>
         </a>
         <a href="/kurse" class="decision-card decision-lernen">
-          <span class="decision-icon">🎓</span>
-          <h3>Ich will tanzen lernen</h3>
-          <p>Kurse, Workshops & Bootcamps für alle Level</p>
-          <span class="decision-arrow">Zu den Kursen &rarr;</span>
+          <div class="decision-content">
+            <h3>Ich will tanzen lernen</h3>
+            <p>Kurse, Workshops & Bootcamps für alle Level</p>
+            <span class="decision-arrow">Zu den Kursen &rarr;</span>
+          </div>
         </a>
       </div>
     </div>
   </section>
 
   <!-- Events Preview -->
-  <section class="section">
+  <section class="section section-alt">
     <div class="container">
       <h2 class="section-title">Nächste Events</h2>
       <p class="section-sub">Partys & Socials in Paderborn und Umgebung</p>
       {events.length > 0 ? (
         <div class="event-list">
           {events.map((event: any) => (
-            <article class="event-card">
-              <div class="event-date">
-                <span class="event-day">{formatDate(event.date)}</span>
-                <span class="event-time">{formatTime(event.date)} Uhr</span>
-              </div>
-              <div class="event-info">
-                {event.category && (
-                  <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#888'}`}>{event.category}</span>
-                )}
-                <h3>{event.title}</h3>
-                <p class="event-location">
-                  {event.location}{event.city ? `, ${event.city}` : ''}
-                </p>
-              </div>
-            </article>
+            <a href={`/events/${event.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{formatDate(event.date)}</span>
+                  <span class="event-time">{formatTime(event.date)} Uhr</span>
+                </div>
+                <div class="event-info">
+                  {event.category && (
+                    <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#888'}`}>{event.category}</span>
+                  )}
+                  <h3>{event.title}</h3>
+                  <p class="event-location">
+                    {event.location}{event.city ? `, ${event.city}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
           ))}
         </div>
       ) : (
@@ -104,30 +137,29 @@ function formatTime(isoDate: string): string {
   </section>
 
   <!-- Kurse Preview -->
-  <section class="section section-warm">
+  <section class="section">
     <div class="container">
       <h2 class="section-title">Aktuelle Kurse</h2>
       <p class="section-sub">Finde den richtigen Einstieg</p>
       {courses.length > 0 ? (
         <div class="event-list">
           {courses.map((kurs: any) => (
-            <article class="event-card">
-              <div class="event-date">
-                <span class="event-day">{kurs.schedule ?? ''}</span>
-                {kurs.startDate && (
-                  <span class="event-time">ab {formatDate(kurs.startDate)}</span>
-                )}
-              </div>
-              <div class="event-info">
-                {kurs.level && (
-                  <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#888'}`}>{kurs.level}</span>
-                )}
-                <h3>{kurs.title}</h3>
-                <p class="event-location">
-                  {kurs.location}{kurs.teacher?.name ? ` · ${kurs.teacher.name}` : ''}
-                </p>
-              </div>
-            </article>
+            <a href={`/kurse/${kurs.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{kurs.schedule ?? ''}</span>
+                </div>
+                <div class="event-info">
+                  {kurs.level && (
+                    <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#888'}`}>{kurs.level}</span>
+                  )}
+                  <h3>{kurs.title}</h3>
+                  <p class="event-location">
+                    {kurs.location}{kurs.teacher?.name ? ` · ${kurs.teacher.name}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
           ))}
         </div>
       ) : (
@@ -138,147 +170,309 @@ function formatTime(isoDate: string): string {
   </section>
 
   <!-- Community Teaser -->
-  <section class="section">
-    <div class="container">
+  <section class="section section-alt">
+    <div class="container community-teaser">
       <h2 class="section-title">Die Szene in Paderborn</h2>
-      <p class="section-sub">Lehrer:innen, Tanzschulen und eine wachsende Community</p>
-      <div class="community-grid">
-        <a href="/lehrer" class="community-card">
-          <span class="community-icon">👩‍🏫</span>
-          <h3>Tanzlehrer:innen</h3>
-          <p>Lerne von den Besten der lokalen Szene</p>
-        </a>
-        <a href="/tanzschulen" class="community-card">
-          <span class="community-icon">🏠</span>
-          <h3>Tanzschulen</h3>
-          <p>Schulen und Vereine in Paderborn & Umgebung</p>
-        </a>
-        <a href="/kontakt" class="community-card">
-          <span class="community-icon">💬</span>
-          <h3>Mitmachen</h3>
-          <p>Du bist Teil der Szene? Werde sichtbar!</p>
-        </a>
-      </div>
+      <p class="community-text">
+        {totalTeachers > 0 || totalSchools > 0
+          ? `${totalTeachers} Tanzlehrer:in${totalTeachers !== 1 ? 'nen' : ''} und ${totalSchools} Tanzschule${totalSchools !== 1 ? 'n' : ''} in Paderborn. Lerne die Szene kennen.`
+          : 'Eine wachsende Community aus Tanzlehrer:innen und Tanzschulen in Paderborn. Lerne die Szene kennen.'
+        }
+      </p>
+      <a href="/szene" class="btn btn-secondary">Die Szene entdecken</a>
     </div>
   </section>
 
 </BaseLayout>
 
 <style>
-  /* Hero */
+  /* ====== Hero ====== */
   .hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: white;
-    padding: 5rem 1.5rem;
+    background: var(--gradient-hero);
+    color: var(--color-white);
+    padding: var(--space-3xl) var(--space-md);
     text-align: center;
   }
-  .hero-label {
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    font-size: 0.8rem;
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
+
+  .hero-inner {
+    max-width: 700px;
+    margin: 0 auto;
   }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #fff 0%, #ffd6a5 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+
+  .hero-headline {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: var(--color-white);
   }
+
+  .hero-highlight {
+    display: inline;
+  }
+
   .hero-sub {
     font-size: 1.15rem;
-    opacity: 0.85;
-    margin-bottom: 2rem;
+    opacity: 0.9;
+    margin-bottom: var(--space-xl);
+    line-height: 1.5;
   }
+
   .hero-cta {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-md);
     justify-content: center;
     flex-wrap: wrap;
   }
 
-  /* Decision */
-  .decision-section { background: white; padding: 3rem 0; }
+  @media (min-width: 1024px) {
+    .hero {
+      padding: var(--space-4xl) var(--space-md);
+    }
+    .hero-headline {
+      font-size: 3.5rem;
+    }
+    .hero-sub {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* ====== Counter Section ====== */
+  .counter-section {
+    background: var(--color-white);
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 46, 0.06);
+  }
+
+  .counter-grid {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+
+  .counter-item {
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .counter-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .counter-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: var(--space-xs);
+    font-weight: 600;
+  }
+
+  .counter-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 1024px) {
+    .counter-number {
+      font-size: 3.5rem;
+    }
+    .counter-section {
+      padding: var(--space-2xl) 0;
+    }
+  }
+
+  /* ====== Decision Section ====== */
   .decision-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
+
+  @media (min-width: 640px) {
+    .decision-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+  }
+
   .decision-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    display: block;
     text-decoration: none;
-    color: inherit;
-    border-radius: 16px;
-    padding: 2rem 1.5rem;
-    transition: transform 0.2s, box-shadow 0.2s;
+    color: var(--color-neutral-dark);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl) var(--space-lg);
+    transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+    text-align: center;
     border: 2px solid transparent;
   }
-  .decision-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-  .decision-ausgehen { background: linear-gradient(135deg, #fff5f5, #ffe8e8); border-color: #f5c6c6; }
-  .decision-ausgehen:hover { border-color: #e74c3c; }
-  .decision-lernen { background: linear-gradient(135deg, #f0faf0, #e0f5e0); border-color: #b8e6b8; }
-  .decision-lernen:hover { border-color: #27ae60; }
-  .decision-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-  .decision-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .decision-card p { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
-  .decision-arrow { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.5; }
 
-  /* Event cards */
-  .event-list { display: flex; flex-direction: column; gap: 0.75rem; }
-  .event-card {
-    display: flex; gap: 1.25rem; align-items: center;
-    background: white; border-radius: 10px; padding: 1rem 1.25rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: box-shadow 0.2s;
+  .decision-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
   }
-  .event-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .event-date { min-width: 100px; text-align: center; flex-shrink: 0; }
-  .event-day { display: block; font-weight: 600; font-size: 0.9rem; }
-  .event-time { display: block; font-size: 0.8rem; color: #888; }
-  .event-info { flex: 1; }
-  .event-tag {
-    display: inline-block; color: white; font-size: 0.7rem; font-weight: 600;
-    padding: 0.15rem 0.5rem; border-radius: 4px; text-transform: uppercase;
-    letter-spacing: 0.05em; margin-bottom: 0.25rem;
-  }
-  .event-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.1rem; }
-  .event-location { font-size: 0.85rem; color: #888; }
 
-  /* Community grid */
-  .community-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.25rem;
+  .decision-ausgehen {
+    background: linear-gradient(135deg, rgba(198, 40, 40, 0.08), rgba(198, 40, 40, 0.04));
+    border-color: rgba(198, 40, 40, 0.15);
   }
-  .community-card {
-    background: white; border-radius: 12px; padding: 1.5rem;
-    text-align: center; text-decoration: none; color: inherit;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .community-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .community-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-  .community-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
-  .community-card p { font-size: 0.85rem; color: #666; }
 
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    color: #888;
+  .decision-ausgehen:hover {
+    border-color: var(--color-primary);
+  }
+
+  .decision-lernen {
+    background: linear-gradient(135deg, rgba(230, 81, 0, 0.08), rgba(230, 81, 0, 0.04));
+    border-color: rgba(230, 81, 0, 0.15);
+  }
+
+  .decision-lernen:hover {
+    border-color: var(--color-secondary-terracotta);
+  }
+
+  .decision-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .decision-content p {
     font-size: 0.95rem;
-    padding: 2rem 0;
+    color: #666;
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
   }
 
-  /* Mobile */
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 2.2rem; }
-    .hero { padding: 3rem 1.5rem; }
-    .event-card { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-    .event-date { text-align: left; }
+  .decision-arrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ====== Section Alt Background ====== */
+  .section-alt {
+    background: var(--color-white);
+  }
+
+  /* ====== Event Cards (homepage compact version) ====== */
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .event-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .event-card {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
+  }
+
+  .section-alt .event-card {
+    background: var(--color-neutral-light);
+  }
+
+  .event-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .event-date {
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .event-day {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-neutral-dark);
+  }
+
+  .event-time {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .event-info {
+    flex: 1;
+  }
+
+  .event-tag {
+    display: inline-block;
+    color: var(--color-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px var(--space-sm);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .event-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .event-location {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  /* ====== Community Teaser ====== */
+  .community-teaser {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .community-text {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  /* ====== Mobile ====== */
+  @media (max-width: 640px) {
+    .hero-headline {
+      font-size: 2rem;
+    }
+    .hero {
+      padding: var(--space-2xl) var(--space-md);
+    }
+    .event-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .event-date {
+      text-align: left;
+    }
   }
 </style>

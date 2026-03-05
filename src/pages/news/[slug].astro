@@ -129,7 +129,7 @@ if (post.publishedAt) {
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     margin-bottom: 1.5rem;
   }
@@ -171,7 +171,7 @@ if (post.publishedAt) {
   }
 
   .article-author a {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
@@ -199,7 +199,7 @@ if (post.publishedAt) {
     margin-bottom: 1rem;
   }
   .article-body :global(h2) {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
@@ -216,7 +216,7 @@ if (post.publishedAt) {
     font-weight: 600;
   }
   .article-body :global(a) {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
@@ -232,7 +232,7 @@ if (post.publishedAt) {
     margin-bottom: 0.25rem;
   }
   .article-body :global(blockquote) {
-    border-left: 3px solid #e74c3c;
+    border-left: 3px solid var(--color-primary);
     padding-left: 1rem;
     margin: 1.5rem 0;
     font-style: italic;
@@ -270,7 +270,7 @@ if (post.publishedAt) {
     padding: 1.25rem;
     background: #faf9f7;
     border-radius: 12px;
-    border-left: 3px solid #e74c3c;
+    border-left: 3px solid var(--color-primary);
   }
 
   .author-avatar {
@@ -279,7 +279,7 @@ if (post.publishedAt) {
     border-radius: 50%;
     flex-shrink: 0;
     overflow: hidden;
-    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    background: var(--gradient-hero);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -312,7 +312,7 @@ if (post.publishedAt) {
   .author-profile-link {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
   }
   .author-profile-link:hover {

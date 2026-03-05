@@ -51,7 +51,7 @@ export const eventBySlugQuery = `
 
 /**
  * All courses, sorted by level in a custom order:
- * Anfaenger (1), Mittelstufe (2), Fortgeschritten (3), Alle (4).
+ * Anfänger (1), Mittelstufe (2), Fortgeschritten (3), Alle (4).
  * GROQ select() maps each level string to a numeric sort key.
  */
 export const allCoursesQuery = `
@@ -246,8 +246,13 @@ export const blogPostBySlugQuery = `
 // ---------------------------------------------------------------------------
 
 /**
- * Homepage data: next 3 upcoming events and 2 featured courses.
- * Uses GROQ's object projection to return both in a single query.
+ * Homepage data: next 3 upcoming events, 2 featured courses, and counts
+ * for the "Diese Woche" counter section.
+ * Uses GROQ's object projection to return everything in a single query.
+ *
+ * Counter logic: counts all events in the current month (build-time).
+ * Since this is a static site, the counts are computed at build time.
+ * With demo data, these may be 0 — the component handles that gracefully.
  */
 export const homepageQuery = `
   {
@@ -281,6 +286,43 @@ export const homepageQuery = `
       location,
       teacher->{name, slug},
       school->{name, slug}
-    }
+    },
+    "totalEvents": count(*[_type == "event" && date >= now()]),
+    "totalCourses": count(*[_type == "course"]),
+    "totalTeachers": count(*[_type == "teacher"]),
+    "totalSchools": count(*[_type == "danceSchool"])
+  }
+`;
+
+// ---------------------------------------------------------------------------
+// Szene Page
+// ---------------------------------------------------------------------------
+
+/**
+ * Szene page data: all teachers and schools for the hub page.
+ */
+export const szenePageQuery = `
+  {
+    "teachers": *[_type == "teacher"] | order(name asc) {
+      _id,
+      name,
+      slug,
+      photo,
+      styles,
+      bio,
+      school->{name, slug}
+    },
+    "schools": *[_type == "danceSchool"] | order(name asc) {
+      _id,
+      name,
+      slug,
+      logo,
+      focus,
+      location,
+      description,
+      website
+    },
+    "totalTeachers": count(*[_type == "teacher"]),
+    "totalSchools": count(*[_type == "danceSchool"])
   }
 `;

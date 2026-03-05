@@ -47,3 +47,23 @@
 **Entscheidung:** Website soll bis Mai 2026 mit Grundgerüst, ersten Inhalten und LehrerInnen-Profilen live sein.
 **Begründung:** Nadias Wunsch. Realistisch machbar bei klarer Priorisierung.
 **Alternativen:** Längere Timeline – nicht nötig bei fokussiertem Scope.
+
+### 2026-03-05 – Brand: Farbpalette Salsa-Rot + Warm Gold + Terracotta
+**Entscheidung:** Primärfarbe #C62828 (warmes Rot), Sekundärfarben #F5A623 (Gold) und #E65100 (Terracotta), Neutral #1A1A2E (Night Navy) und #FAF7F2 (Warm White).
+**Begründung:** Rot ist die universelle Salsa-Assoziation (Leidenschaft, Energie). Gold bringt Wärme und Lebensfreude. Terracotta verbindet beides. Night Navy als Textfarbe ist weicher als reines Schwarz und assoziiert subtil Abendstimmung. Warm White reduziert Bildschirm-Härte. Alle Kombinationen erfüllen WCAG AA (Gold nur auf dunklem Hintergrund). Basierend auf Research von 12 Referenz-Websites: Warme Farben sind in der Latin-Dance-Szene universell, blaue Paletten wirken deplatziert.
+**Alternativen:** Blau-basierte Palette (verworfen: zu kalt, zu corporate, Latin Dance = Wärme), Orange-Teal wie La Candela (verworfen: zu weit weg von Salsa-Erwartung), Gold-primär wie Cologne Congress (verworfen: zu luxuriös/exklusiv für inklusives Community-Portal).
+
+### 2026-03-05 – Brand: Typografie Sansita + Source Sans 3
+**Entscheidung:** Sansita (Bold/SemiBold) für Headlines, Source Sans 3 (Regular/SemiBold/Light) für Body-Text. Beide self-hosted als Variable Fonts.
+**Begründung:** Sansita hat kalligrafische Qualität und Bewegung – passt zu Tanz und Latin-Kultur, ohne unleserlich zu sein. Source Sans 3 ist ein humanistischer Sans-Serif mit exzellenter Lesbarkeit auf allen Screengrößen. Beide SIL Open Font License (kostenlos). Self-Hosting für DSGVO-Konformität.
+**Alternativen:** Poppins + Roboto (verworfen: zu generisch, null Wiedererkennung), Fjalla One + Source Sans Pro (verworfen: Fjalla One zu kantig/maskulin), Oswald + Open Sans (verworfen: zu editorial, zu wenig Wärme).
+
+### 2026-03-05 – Brand: Positionierung als Community-Portal
+**Entscheidung:** Positionierung: "Salsa Paderborn zeigt dir, was diese Woche in deiner Stadt getanzt wird – und macht dir Lust, dabei zu sein." Ton: einladend, energetisch, unkompliziert, community-orientiert, lokal-stolz. Konsequentes Duzen.
+**Begründung:** Die Zielgruppe sind Neugierige und Anfänger, die "Salsa Paderborn" googeln. Der Ton muss die Schwellenangst nehmen, nicht verstärken. Alle deutschen Salsa-Portale aus dem Research sind entweder veraltet, informations-überladen oder unpersönlich – Salsa Paderborn differenziert sich durch modernes Design, klare Sprache und echtes Community-Gefühl.
+**Alternativen:** Professionell-distanzierter Ton (verworfen: schreckt Anfänger ab), Englischer Ton (verworfen: lokales Portal in Paderborn, Zielgruppe googelt deutsch).
+
+### 2026-03-05 – Brand: Icons via Lucide
+**Entscheidung:** Lucide Icons als Icon-System. Line Icons, 2px Stroke, konsistenter Stil.
+**Begründung:** Open Source (ISC License), konsistentes 24px Grid, Tree-shakeable (Performance), Astro-Integration verfügbar, große Auswahl relevanter Icons.
+**Alternativen:** Heroicons (verworfen: weniger Auswahl), Font Awesome (verworfen: größeres Bundle, kommerzielle Lizenz für vollen Umfang), Custom Icons (verworfen: unnötiger Aufwand für Phase 1).

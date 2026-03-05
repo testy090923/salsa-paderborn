@@ -26,20 +26,20 @@ if (!course) {
   return Astro.redirect('/kurse');
 }
 
-// Level color coding (matching CourseCard)
+// Level color coding (Brand Guide)
 const levelColors: Record<string, string> = {
-  'Anfänger': '#27ae60',
-  'Mittelstufe': '#e67e22',
-  'Fortgeschritten': '#e74c3c',
-  'Alle': '#3498db',
+  'Anfänger': 'var(--color-success)',
+  'Mittelstufe': 'var(--color-secondary-terracotta)',
+  'Fortgeschritten': 'var(--color-primary)',
+  'Alle': 'var(--color-info)',
 };
 const tagColor = levelColors[course.level ?? ''] ?? '#888';
 
-// Style color coding
+// Style color coding (Brand Guide)
 const styleColors: Record<string, string> = {
-  'Salsa': '#e74c3c',
-  'Bachata': '#9b59b6',
-  'Kizomba': '#2980b9',
+  'Salsa': 'var(--color-primary)',
+  'Bachata': 'var(--color-secondary-terracotta)',
+  'Kizomba': 'var(--color-info)',
   'Sonstiges': '#888',
 };
 const styleColor = styleColors[course.style ?? ''] ?? '#888';
@@ -181,19 +181,19 @@ if (course.startDate) {
     display: inline-block;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
   }
   .back-link:hover {
     text-decoration: underline;
   }
 
   .detail-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-card);
   }
 
   .detail-image {
@@ -243,8 +243,8 @@ if (course.startDate) {
     display: inline-block;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #27ae60;
-    background: #eafaf1;
+    color: var(--color-success);
+    background: rgba(46, 125, 50, 0.08);
     padding: 0.3rem 0.75rem;
     border-radius: 6px;
     margin-bottom: 1rem;
@@ -256,8 +256,8 @@ if (course.startDate) {
     gap: 0.5rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: #faf9f7;
-    border-radius: 8px;
+    background: var(--color-neutral-light);
+    border-radius: var(--radius-sm);
   }
 
   .meta-row {
@@ -277,7 +277,7 @@ if (course.startDate) {
     color: #333;
   }
   .meta-value a {
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
@@ -289,7 +289,7 @@ if (course.startDate) {
     margin-bottom: 1.5rem;
   }
   .detail-description h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
   }
@@ -304,9 +304,9 @@ if (course.startDate) {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: #faf9f7;
-    border-radius: 8px;
-    border-left: 3px solid #e74c3c;
+    background: var(--color-neutral-light);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--color-primary);
   }
 
   .teacher-avatar {
@@ -315,7 +315,7 @@ if (course.startDate) {
     border-radius: 50%;
     flex-shrink: 0;
     overflow: hidden;
-    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    background: var(--gradient-hero);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -347,7 +347,7 @@ if (course.startDate) {
   .teacher-profile-link {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #e74c3c;
+    color: var(--color-primary);
     text-decoration: none;
     white-space: nowrap;
   }

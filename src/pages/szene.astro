@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TeacherCard from '../components/TeacherCard.astro';
+import SchoolCard from '../components/SchoolCard.astro';
+import { sanityClient } from '../lib/sanity';
+import { szenePageQuery } from '../lib/queries';
+
+const data = await sanityClient.fetch(szenePageQuery);
+const teachers = data?.teachers ?? [];
+const schools = data?.schools ?? [];
+const totalTeachers = data?.totalTeachers ?? 0;
+const totalSchools = data?.totalSchools ?? 0;
+---
+
+<BaseLayout
+  title="Salsa Szene Paderborn – Tanzlehrer:innen, Tanzschulen & Community"
+  description="Die Salsa-Szene in Paderborn: Tanzlehrer:innen, Tanzschulen und eine wachsende Community. Lerne die Menschen kennen, die Paderborn zum Tanzen bringen."
+>
+  <div class="page-header">
+    <h1>Die Szene in Paderborn</h1>
+    <p>Lerne die Menschen kennen, die Paderborn zum Tanzen bringen</p>
+  </div>
+
+  <!-- Über uns -->
+  <section class="section">
+    <div class="container about-block">
+      <h2>Was ist Salsa Paderborn?</h2>
+      <p>
+        Salsa Paderborn ist das lokale Community-Portal für die Latin-Dance-Szene in Paderborn und Umgebung. Wir sind keine Tanzschule und kein Verein – sondern die neutrale Anlaufstelle, die alle Akteure der Szene zusammenbringt.
+      </p>
+      <p>
+        Hier findest du Partys, Kurse, Bootcamps und Festivals. Wir zeigen dir, wer in Paderborn unterrichtet und wo du tanzen kannst. Egal ob Anfänger oder erfahrener Tänzer – du bist hier richtig.
+      </p>
+      <p>
+        Hinter Salsa Paderborn stehen Tänzer:innen aus der Region, die eine Lücke gesehen haben: Die Szene ist lebendig, aber online kaum sichtbar. Das ändern wir.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lehrer:innen -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Tanzlehrer:innen</h2>
+      <p class="section-sub">
+        {totalTeachers > 0
+          ? `${totalTeachers} Tanzlehrer:in${totalTeachers !== 1 ? 'nen' : ''} aus der Region`
+          : 'Tanzlehrer:innen aus der Region'
+        }
+      </p>
+      {teachers.length > 0 ? (
+        <div class="card-list">
+          {teachers.map((teacher: any) => (
+            <TeacherCard teacher={teacher} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Noch keine Tanzlehrer:innen eingetragen.</p>
+      )}
+      {teachers.length > 0 && (
+        <a href="/lehrer" class="see-all">Alle Lehrer:innen anzeigen &rarr;</a>
+      )}
+    </div>
+  </section>
+
+  <!-- Tanzschulen -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Tanzschulen & Vereine</h2>
+      <p class="section-sub">
+        {totalSchools > 0
+          ? `${totalSchools} Tanzschule${totalSchools !== 1 ? 'n' : ''} und Vereine in Paderborn`
+          : 'Tanzschulen und Vereine in Paderborn'
+        }
+      </p>
+      {schools.length > 0 ? (
+        <div class="card-list">
+          {schools.map((school: any) => (
+            <SchoolCard school={school} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Noch keine Tanzschulen eingetragen.</p>
+      )}
+      {schools.length > 0 && (
+        <a href="/tanzschulen" class="see-all">Alle Tanzschulen anzeigen &rarr;</a>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container cta-block">
+      <h2>Du bist Teil der Szene?</h2>
+      <p>Du unterrichtest, veranstaltest oder tanzt in Paderborn? Werde sichtbar und zeige der Community, was du machst.</p>
+      <a href="/kontakt" class="btn btn-primary">Melde dich bei uns</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* About Block */
+  .about-block {
+    max-width: 700px;
+  }
+
+  .about-block h2 {
+    font-family: var(--font-heading);
+    margin-bottom: var(--space-lg);
+  }
+
+  .about-block p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: var(--space-md);
+  }
+
+  .about-block p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Alt Section */
+  .section-alt {
+    background: var(--color-white);
+  }
+
+  /* Card List */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    background: var(--gradient-hero);
+    color: var(--color-white);
+  }
+
+  .cta-block {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .cta-block h2 {
+    font-family: var(--font-heading);
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+  }
+
+  .cta-block p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  .cta-block .btn-primary {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border-color: var(--color-white);
+  }
+
+  .cta-block .btn-primary:hover {
+    background: var(--color-neutral-light);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+</style>
