@@ -21,19 +21,26 @@
 - [x] Sanity-Projekt angelegt (Project ID: ne69pi1u)
 - [x] Sanity Studio läuft unter /studio
 - [x] Demo-Content per Seed-Script eingespielt
-- [ ] Impressum + Datenschutz
-- [ ] SEO-Optimierung (Meta-Tags, Open Graph, strukturierte Daten)
+- [x] Impressum + Datenschutz – Platzhalter-Seiten erstellt, warten auf Nadias Daten
+- [x] SEO-Basics (OG Meta Tags, Sitemap, robots.txt, Favicon)
+- [ ] SEO-Advanced (Schema.org JSON-LD) – in Arbeit
 - [x] Brand Guide (Farben, Typo, Logo) – Draft, wartet auf Feedback
-- [ ] QA + Feinschliff (Accessibility, Mobile, Performance)
-- [ ] Fotogalerie (Phase 2?)
+- [ ] Logo SVG-Wordmark – in Arbeit
+- [x] QA + Feinschliff (Accessibility, Mobile, Performance) – 15 Fixes umgesetzt
+- [ ] Fotogalerie (Phase 2)
+- [ ] Locations als Content-Typ (Phase 2)
 - [x] Deployment auf Netlify – LIVE
-- [ ] Sanity Webhook → Netlify Build Hook
-- [ ] Nadia onboarden (Sanity-Zugang, Kurzanleitung) – Einladung verschickt
+- [x] Scheduled Deploys via GitHub Actions Cron (2x täglich, 6:00 + 18:00 UTC)
+- [x] Sanity-Anleitung für Nadia geschrieben (client/sanity-anleitung.md)
+- [x] Nadia als Sanity-Editor eingeladen
+- [x] 404-Seite erstellt
+- [x] QA-Report erstellt (progress/qa-report.md)
 
-## Offene Blocker
+## Offene Blocker (brauchen Nadia)
 - **Impressum:** Nadia muss Adressfrage klären (virtuelle Geschäftsadresse)
 - **Fotos:** Kein Bildmaterial vorhanden – Nadia muss beim nächsten Event fotografieren lassen
 - **Brand-Feedback:** Nadia muss Brand Guide reviewen
+- **Echter Content:** Reale Events, Kurse, Lehrer eintragen (Sanity-Anleitung liegt bereit)
 
 ## Technische Details (für nächste Session)
 - **Dev-Server:** `npm run dev` → `http://localhost:4510`
