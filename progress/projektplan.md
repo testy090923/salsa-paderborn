@@ -1,121 +1,142 @@
 # Projektplan – salsa-paderborn.de
 
-> Erstellt: 2026-03-03 | Ziel: Live bis Mai 2026
+> Erstellt: 2026-03-03 | Letzte Aktualisierung: 2026-03-05 | Ziel: Live bis Mai 2026
 
-## Arbeitsweise
-- **Andy** macht fast alles (mit Agents), Nadia gibt Feedback
-- **Kommunikation:** Mix aus Treffen + async Feedback
-- **Technik:** Andy handelt alles eigenständig (inkl. Domain/DNS)
-- **Bezahlung:** Wird noch geklärt
+## Projekt-Kontext (für neue Sessions)
+
+**Was ist das?** Ein lokales Community-Portal für die Salsa-Szene in Paderborn und Umgebung. NICHT eine Vereinswebsite für Salsa Pasión e.V. – sondern eine neutrale Plattform für ALLE Tanzschulen, Lehrer:innen und Events der Region.
+
+**Wer ist beteiligt?**
+- **Nadia** – Projektinitiatorin, Vorstand Salsa Pasión e.V., erste Tanzlehrerin auf der Plattform. Technisch nicht versiert. Muss niederschwellig an Themen herangeführt werden.
+- **Andy** – Coach und Berater für Nadia. Kennt sie persönlich seit langem, ist selbst Tänzer in der Szene. Führt das Projekt mit Claude als Agentur-Partner.
+- **Pflege-Person** – Noch nicht bestimmt. Nadia hat Kandidaten, ist aber noch nicht fix. Soll Events und Inhalte pflegen.
+
+**Beziehungsdynamik:** Andy und Nadia kennen sich gut. Kein Agentur-Klient-Verhältnis im klassischen Sinne, eher freundschaftliche Beratung. Andy berät strategisch (Branding, Positionierung, Technik), Nadia entscheidet. Andy handelt technisch eigenständig.
+
+**Domain:** salsa-paderborn.de (gesichert)
+**Technik:** Astro + Sanity CMS + Netlify
+**Bezahlung:** Noch ungeklärt
 
 ---
 
-## Nächster Meilenstein: Meeting 17.03.2026
-Nadia soll bis dahin: Referenz-Websites, Profil-Daten, Tanzschul-Daten, erste Events, evtl. 2-3 weitere Lehrer:innen.
-Andy soll bis dahin: CMS/Datenbank-Lösung konzipiert, neues Prototyp-Design steht.
+## Wo wir stehen (Stand: 2026-03-05)
+
+### ✅ Erledigt
+- Meeting 1 mit Nadia (2026-03-03): Briefing, Scope, Zielgruppen definiert
+- Astro-Projekt aufgesetzt mit allen Seiten
+- **Sanity CMS komplett integriert** (5 Content-Typen, Studio unter /studio, Seed-Script)
+- 12 Seiten gebaut (Homepage, Events, Kurse, Lehrer, Tanzschulen, News, Kontakt – je Listing + Detail)
+- Wiederverwendbare Komponenten (6 Cards + SanityImage)
+- Demo-Content in Sanity (1 Schule, 1 Lehrerin, 4 Events, 3 Kurse, 1 Blog-Post)
+- Dev-Server läuft lokal auf Port 4510
+
+### 🔲 Offen – Nächste Schritte
+1. **Brand Guide** – Farben, Typo, Logo, Tonalität. Aktuell Prototyp-Design. Muss VOR dem nächsten Nadia-Termin stehen.
+2. **Neues Prototyp-Design** – Nadia soll beim nächsten Meeting etwas sehen, das "echt" wirkt, nicht wie ein Wireframe.
+3. **Impressum + Datenschutz** – Blockiert durch Nadias Adressfrage und Steuerberater-Klärung.
+4. **SEO-Grundlagen** – Meta-Tags, Open Graph, strukturierte Daten (Schema.org).
+5. **Deployment auf Netlify** – Domain verbinden, Build Hook + Sanity Webhook.
+6. **QA** – Accessibility, Mobile, Performance, Lighthouse.
+7. **Nadia onboarden** – Sanity-Zugang geben, Kurzanleitung schreiben.
+
+### 🚫 Blockiert durch Nadia
+- **Impressum-Adresse:** Will keine Privatadresse. Muss virtuelle Geschäftsadresse finden.
+- **Rechtsform:** Wer betreibt salsa-paderborn.de? Empfehlung: Nadia als Freiberuflerin. Muss mit Steuerberater klären.
+- **Steuerliche Frage:** Website bewirbt indirekt Nadias Kurse. Relevant als Freiberufler-Werbung?
+- **Pflege-Person:** Wer macht das? Kandidaten vorhanden, nicht fix.
+- **Foto-/Bildmaterial:** Woher nehmen? Stockfotos, eigene, AI?
 
 ---
 
-## Phase 1: Fundament (KW 10-11 · März)
-> Ziel: Marke steht, Struktur steht, Nadia hat einmal "Ja" gesagt
+## Nächster Meilenstein: Meeting 17.03.2026 (vor Ort im Café)
 
-| # | Aufgabe | Wer | Nadia-Involvement | Status |
-|---|---------|-----|-------------------|--------|
-| 1.1 | Brand Guide: Farben, Typo, Tonalität, Logo-Richtung | Andy + Brand Strategist | Feedback & Freigabe | offen |
-| 1.2 | Seitenstruktur & Navigation finalisieren | Andy + Content Architect | Feedback | offen |
-| 1.3 | Customer Journeys definieren (tanzen gehen vs. lernen) | Andy + Content Architect | Feedback | offen |
-| 1.4 | Design-Mockup Startseite (im Browser, nicht Figma) | Andy + Builder | Freigabe | offen |
+### Was Nadia liefern soll:
+- [ ] Referenz-Websites (Design-Inspiration)
+- [ ] Eigenes Profil: Foto, Bio, Kursangebot
+- [ ] Daten zu Salsa Pasión als Tanzschule
+- [ ] Erste echte Events als Probe-Daten
+- [ ] 2-3 andere Tanzlehrer:innen aus der Region + deren Infos
+
+### Was Andy liefern soll:
+- [x] CMS-Lösung konzipiert und umgesetzt (Sanity) ✅
+- [x] Seiten auf Datenbank-Lösung umgestellt ✅
+- [ ] Brand Guide (Farben, Typo, Tonalität) – damit Design nicht mehr "Wireframe" wirkt
+- [ ] Neues visuelles Design, das Nadia ein Gefühl für die fertige Seite gibt
+
+---
+
+## Phasenplan (aktualisiert)
+
+### Phase 1: Fundament – KW 10-12 (bis ~20. März)
+| Aufgabe | Status | Blockiert durch |
+|---------|--------|----------------|
+| Brand Guide: Farben, Typo, Tonalität | **Offen** | – |
+| Seitenstruktur & Navigation | ✅ Done | – |
+| Customer Journeys (tanzen gehen vs. lernen) | ✅ Done (in Seitenstruktur umgesetzt) | – |
+| Design-Mockup Startseite (im Browser) | **Offen** (abhängig von Brand Guide) | Brand Guide |
+| CMS-Lösung konzipieren + umsetzen | ✅ Done (Sanity) | – |
 
 **Meilenstein:** Nadia sieht die Startseite im Browser und sagt "Ja, so soll das aussehen."
 
-**Nadia-Termin nötig:** 1x Feedback-Runde zum Brand Guide + Design
+### Phase 2: Content & Profile – KW 13-16 (April)
+| Aufgabe | Status | Blockiert durch |
+|---------|--------|----------------|
+| Texte schreiben (Startseite, Über uns, etc.) | Offen | Brand Guide (Tonalität) |
+| Nadias Profil mit echten Daten | Offen | Nadia (Foto, Bio) |
+| Echte Events einpflegen | Offen | Nadia (Eventdaten) |
+| Bildkonzept umsetzen | Offen | Entscheidung Stockfotos/eigene/AI |
+| SEO-Grundlagen | Offen | – |
+| Weitere Lehrer:innen-Profile | Offen | Nadia (muss Leute gewinnen) |
+
+### Phase 3: Feinschliff & Go-Live – KW 17-18 (Ende April/Mai)
+| Aufgabe | Status | Blockiert durch |
+|---------|--------|----------------|
+| QA: Accessibility, Performance, Mobile | Offen | – |
+| Impressum & Datenschutz | Offen | Nadia (Adresse, Rechtsform) |
+| Domain verbinden (DNS → Netlify) | Offen | Nadia (Provider-Zugang) |
+| Netlify Deployment + Webhook | Offen | – |
+| Sanity-Onboarding für Nadia | Offen | – |
+| Finale Freigabe | Offen | Nadia |
+| Go-Live 🚀 | Offen | Alles oben |
 
 ---
 
-## Phase 2: Grundgerüst (KW 12-14 · März/April)
-> Ziel: Alle Seiten existieren, Events können eingepflegt werden
+## Nadia-Abhängigkeiten
 
-| # | Aufgabe | Wer | Nadia-Involvement | Status |
-|---|---------|-----|-------------------|--------|
-| 2.1 | Astro-Projekt sauber aufsetzen (Layouts, Komponenten, Styles) | Andy + Builder | Keine | offen |
-| 2.2 | Event-System bauen (Content Collections, Event-Karten) | Andy + Builder | Keine | offen |
-| 2.3 | Kurs-/Workshop-System bauen | Andy + Builder | Keine | offen |
-| 2.4 | LehrerInnen-Profil-Template bauen | Andy + Builder | Keine | offen |
-| 2.5 | Alle Seiten anlegen (Startseite, Events, Kurse, LehrerInnen, Kontakt) | Andy + Builder | Keine | offen |
-| 2.6 | Navigation & Footer | Andy + Builder | Keine | offen |
-| 2.7 | Responsive / Mobile First | Andy + Builder | Keine | offen |
-
-**Meilenstein:** Website funktioniert technisch komplett, aber mit Platzhalter-Content.
-
-**Nadia-Termin nötig:** Keiner – Andy baut durch.
+| Was | Wann nötig | Blockiert | Status |
+|-----|-----------|-----------|--------|
+| Feedback Brand Guide | Phase 1 (vor 17.03.) | Design | Offen |
+| Feedback Design-Mockup | Phase 1 (am 17.03.) | Phase 2 | Offen |
+| Foto + Bio für ihr Profil | Phase 2 | Profil | Offen – angefragt für 17.03. |
+| Liste aktuelle Events in PB | Phase 2 | Echte Inhalte | Offen – angefragt für 17.03. |
+| Eigene Fotos (falls vorhanden) | Phase 2 | Bildkonzept | Offen |
+| Steuerberater-Klärung (Rechtsform) | Phase 3 | Impressum | Offen |
+| Virtuelle Geschäftsadresse | Phase 3 | Impressum | Offen |
+| Domain-Provider-Zugangsdaten | Phase 3 | Go-Live | Offen |
+| 2-3 weitere Lehrer:innen | Phase 2 | Plattform-Wachstum | Offen – angefragt für 17.03. |
+| Finale Freigabe | Phase 3 | Go-Live | Offen |
 
 ---
 
-## Phase 3: Content & Profile (KW 15-16 · April)
-> Ziel: Echte Inhalte drin, Nadia als erste Lehrerin präsentiert
-
-| # | Aufgabe | Wer | Nadia-Involvement | Status |
-|---|---------|-----|-------------------|--------|
-| 3.1 | Texte schreiben: Startseite, Über uns, etc. | Andy + Content Architect | Feedback | offen |
-| 3.2 | Nadias LehrerInnen-Profil erstellen | Andy | Nadia liefert: Foto, Bio-Infos, Kursangebot | offen |
-| 3.3 | Erste echte Events einpflegen | Andy | Nadia hilft: Welche Events laufen? | offen |
-| 3.4 | Bildkonzept umsetzen (Stockfotos / eigene Fotos / Platzhalter) | Andy | Nadia: eigene Fotos falls vorhanden | offen |
-| 3.5 | SEO-Grundlagen: Meta-Tags, strukturierte Daten, semantisches HTML | Andy + Builder | Keine | offen |
-
-**Meilenstein:** Die Website sieht "echt" aus – nicht mehr wie ein Prototyp.
-
-**Nadia-Termin nötig:** 1x für Profil-Infos + Content-Feedback. Plus: Klärung Fotomaterial.
-
----
-
-## Phase 4: Feinschliff & Go-Live (KW 17-18 · Ende April/Mai)
-> Ziel: Live auf salsa-paderborn.de
-
-| # | Aufgabe | Wer | Nadia-Involvement | Status |
-|---|---------|-----|-------------------|--------|
-| 4.1 | QA: Accessibility, Performance, Mobile, Lighthouse | Andy + QA Reviewer | Keine | offen |
-| 4.2 | Impressum & Datenschutz | Andy | Nadia: Adresse, Rechtsform (Steuerberater!) | offen |
-| 4.3 | Domain verbinden (DNS → Netlify) | Andy | Nadia: Domain-Provider-Zugang | offen |
-| 4.4 | Netlify Deployment einrichten | Andy + Builder | Keine | offen |
-| 4.5 | Finale Freigabe durch Nadia | Andy | GO/NO-GO Entscheidung | offen |
-| 4.6 | Go-Live | Andy | 🎉 | offen |
-
-**Meilenstein:** salsa-paderborn.de ist live.
-
-**Nadia-Termin nötig:** 1x finale Freigabe. Plus: Impressum-Daten + Domain-Zugang.
-
----
-
-## Nadia-Abhängigkeiten (was sie liefern MUSS)
-
-| Was | Wann nötig | Blockiert |
-|-----|-----------|-----------|
-| Feedback Brand Guide | Phase 1 | Alles danach |
-| Feedback Design-Mockup | Phase 1 | Phase 2 |
-| Foto + Bio für ihr Profil | Phase 3 | Ihr LehrerInnen-Profil |
-| Liste aktuelle Events in PB | Phase 3 | Echte Inhalte |
-| Eigene Fotos (falls vorhanden) | Phase 3 | Bildkonzept |
-| Steuerberater-Klärung (Rechtsform, Impressum) | Phase 4 | Impressum, Go-Live |
-| Domain-Provider-Zugangsdaten | Phase 4 | Go-Live |
-| Finale Freigabe | Phase 4 | Go-Live |
-
----
-
-## Offene Entscheidungen (für Andy)
+## Offene strategische Fragen
 
 1. **Logo:** Selbst gestalten (mit Agents) oder extern vergeben?
 2. **Fotos:** Stockfotos, AI-generiert, eigenes Material, oder Mix?
-3. **Content-Pflege nach Go-Live:** Wie pflegt die Pflege-Person Events ein? Direkt in Markdown/Git? Oder brauchen wir ein CMS?
-4. **Hosting:** Netlify Free Tier reicht vermutlich – bestätigen.
+3. **Gemeinnützigkeit:** Läuft die Seite über Salsa Pasión e.V. oder privat über Nadia? Steuerberater muss ran.
+4. **Kooperationsmodell:** Wie genau werden andere Tanzschulen eingebunden? (Phase 2)
+5. **Bestehende Salsa Pasión Website:** URL? Was ist drauf? Wie verlinken wir?
+6. **Andere Veranstalter:** Wer ist noch aktiv in Paderborn? Einbinden?
 
 ---
 
-## Zeitstrahl
+## Zeitstrahl (aktualisiert)
 
 ```
-März          April              Mai
-|-- Phase 1 --|-- Phase 2 -------|
-               |-- Phase 3 ------|
-                          |-- Phase 4 --|
-                                     🚀 LIVE
+März                    April                   Mai
+|--- Phase 1 ----------|                        |
+  Brand Guide, Design    |--- Phase 2 ---------|
+  Meeting 17.03.           Content, Profile, SEO
+                                    |--- Phase 3 --|
+                                    QA, Deployment
+                                                🚀 LIVE
 ```
