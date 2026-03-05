@@ -9,7 +9,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import { PortableText } from 'astro-portabletext';
-import { sanityClient } from '../../lib/sanity';
+import { sanityClient, urlFor } from '../../lib/sanity';
 import { teacherBySlugQuery } from '../../lib/queries';
 
 export async function getStaticPaths() {
@@ -35,9 +35,36 @@ const levelColors: Record<string, string> = {
   'Fortgeschritten': 'var(--color-primary)',
   'Alle': 'var(--color-info)',
 };
+
+// Schema.org Person structured data
+const siteUrl = 'https://salsa-paderborn.de';
+const teacherImageUrl = teacher.photo ? urlFor(teacher.photo)?.width(600).url() : undefined;
+
+const teacherJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: teacher.name,
+  url: `${siteUrl}/lehrer/${teacher.slug?.current}`,
+  ...(teacherImageUrl && { image: teacherImageUrl }),
+  jobTitle: 'Tanzlehrer:in',
+  ...(teacher.website && { sameAs: teacher.website }),
+  ...(teacher.school?.name && {
+    worksFor: {
+      '@type': 'Organization',
+      name: teacher.school.name,
+      ...(teacher.school.slug?.current && {
+        url: `${siteUrl}/tanzschulen/${teacher.school.slug.current}`,
+      }),
+    },
+  }),
+  ...(teacher.styles?.length > 0 && {
+    knowsAbout: teacher.styles,
+  }),
+};
 ---
 
 <BaseLayout title={`${teacher.name} – Tanzlehrer:in in Paderborn`}>
+  <script type="application/ld+json" set:html={JSON.stringify(teacherJsonLd)} slot="head" />
   <div class="page-header">
     <h1>{teacher.name}</h1>
     <p>

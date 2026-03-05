@@ -10,7 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import EventCard from '../../components/EventCard.astro';
 import { PortableText } from 'astro-portabletext';
-import { sanityClient } from '../../lib/sanity';
+import { sanityClient, urlFor } from '../../lib/sanity';
 import { schoolBySlugQuery } from '../../lib/queries';
 
 export async function getStaticPaths() {
@@ -36,9 +36,33 @@ const levelColors: Record<string, string> = {
   'Fortgeschritten': 'var(--color-primary)',
   'Alle': 'var(--color-info)',
 };
+
+// Schema.org LocalBusiness structured data
+const siteUrl = 'https://salsa-paderborn.de';
+const schoolLogoUrl = school.logo ? urlFor(school.logo)?.width(400).url() : undefined;
+
+const schoolJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DanceSchool',
+  name: school.name,
+  url: `${siteUrl}/tanzschulen/${school.slug?.current}`,
+  ...(schoolLogoUrl && { image: schoolLogoUrl }),
+  ...(school.website && { sameAs: school.website }),
+  ...(school.location && {
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: school.location,
+      addressLocality: 'Paderborn',
+      addressCountry: 'DE',
+    },
+  }),
+  ...(school.contact?.phone && { telephone: school.contact.phone }),
+  ...(school.contact?.email && { email: school.contact.email }),
+};
 ---
 
 <BaseLayout title={`${school.name} – Salsa Paderborn`}>
+  <script type="application/ld+json" set:html={JSON.stringify(schoolJsonLd)} slot="head" />
   <div class="page-header">
     <h1>{school.name}</h1>
     {school.focus?.length > 0 && <p>{school.focus.join(' · ')}</p>}

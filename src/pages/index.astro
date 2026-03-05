@@ -27,6 +27,31 @@ const levelColors: Record<string, string> = {
   'Alle': 'var(--color-info)',
 };
 
+// Schema.org WebSite + Organization structured data
+const siteUrl = 'https://salsa-paderborn.de';
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Salsa Paderborn',
+  url: siteUrl,
+  description: 'Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.',
+  inLanguage: 'de',
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Salsa Paderborn',
+  url: siteUrl,
+  description: 'Community-Portal für die Latin-Dance-Szene in Paderborn und Umgebung. Partys, Kurse, Tanzschulen und Lehrer:innen an einem Ort.',
+  areaServed: {
+    '@type': 'City',
+    name: 'Paderborn',
+    addressCountry: 'DE',
+  },
+};
+
 // Format date in German locale
 function formatDate(isoDate: string): string {
   const d = new Date(isoDate);
@@ -42,6 +67,8 @@ function formatTime(isoDate: string): string {
   title="Salsa Paderborn – Partys, Kurse & Events für Salsa, Bachata & Kizomba"
   description="Was läuft diese Woche in Paderborn? Finde Salsa-Partys, Bachata-Kurse und Kizomba-Events in deiner Nähe. Dein Community-Portal für Latin Dance."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} slot="head" />
 
   <!-- Hero -->
   <section class="hero" aria-label="Hero">

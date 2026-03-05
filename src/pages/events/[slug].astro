@@ -9,7 +9,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import { PortableText } from 'astro-portabletext';
-import { sanityClient } from '../../lib/sanity';
+import { sanityClient, urlFor } from '../../lib/sanity';
 import { eventBySlugQuery } from '../../lib/queries';
 
 export async function getStaticPaths() {
@@ -66,9 +66,47 @@ const categoryColors: Record<string, string> = {
   Sonstiges: '#666',
 };
 const tagColor = categoryColors[event.category ?? ''] ?? '#666';
+
+// Schema.org Event structured data
+const siteUrl = 'https://salsa-paderborn.de';
+const eventImageUrl = event.image ? urlFor(event.image)?.width(1200).url() : undefined;
+
+const eventJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: event.title,
+  startDate: event.date,
+  ...(event.endDate && { endDate: event.endDate }),
+  description: event.description ?? undefined,
+  url: `${siteUrl}/events/${event.slug?.current}`,
+  ...(eventImageUrl && { image: eventImageUrl }),
+  ...(event.location && {
+    location: {
+      '@type': 'Place',
+      name: event.location,
+      ...(event.city && {
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: event.city,
+        },
+      }),
+    },
+  }),
+  ...(event.organizer?.name && {
+    organizer: {
+      '@type': 'Organization',
+      name: event.organizer.name,
+      ...(event.organizer.slug?.current && {
+        url: `${siteUrl}/tanzschulen/${event.organizer.slug.current}`,
+      }),
+    },
+  }),
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+};
 ---
 
 <BaseLayout title={`${event.title} – Salsa Paderborn`}>
+  <script type="application/ld+json" set:html={JSON.stringify(eventJsonLd)} slot="head" />
   <div class="page-header">
     <h1>{event.title}</h1>
     <p>{formattedDate} · {formattedTime} Uhr</p>

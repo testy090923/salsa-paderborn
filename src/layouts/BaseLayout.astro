@@ -41,6 +41,9 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
 
     <title>{title}</title>
 
+    <!-- Structured data slot for JSON-LD -->
+    <slot name="head" />
+
     <style is:global>
       /* ==========================================================================
          Font-Face Declarations
