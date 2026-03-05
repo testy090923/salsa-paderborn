@@ -48,10 +48,6 @@ function formatTime(isoDate: string): string {
     <div class="hero-inner">
       <h1 class="hero-headline">Salsa in Paderborn?<br /><span class="hero-highlight">Oh ja.</span></h1>
       <p class="hero-sub">Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.</p>
-      <div class="hero-cta">
-        <a href="/events" class="btn btn-primary">Events entdecken</a>
-        <a href="/kurse" class="btn btn-secondary-light">Tanzen lernen</a>
-      </div>
     </div>
   </section>
 
@@ -190,7 +186,7 @@ function formatTime(isoDate: string): string {
   .hero {
     background: var(--gradient-hero);
     color: var(--color-white);
-    padding: var(--space-3xl) var(--space-md);
+    padding: var(--space-2xl) var(--space-md);
     text-align: center;
   }
 
@@ -219,16 +215,9 @@ function formatTime(isoDate: string): string {
     line-height: 1.5;
   }
 
-  .hero-cta {
-    display: flex;
-    gap: var(--space-md);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
   @media (min-width: 1024px) {
     .hero {
-      padding: var(--space-4xl) var(--space-md);
+      padding: var(--space-3xl) var(--space-md);
     }
     .hero-headline {
       font-size: 3.5rem;
