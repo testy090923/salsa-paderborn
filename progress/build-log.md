@@ -4,8 +4,8 @@
 
 ## Aktueller Stand
 - [x] Projekt-Setup (Astro + Netlify)
-- [ ] Brand Guide erstellt
-- [ ] Sitemap & Content-Plan
+- [x] Brand Guide erstellt (Draft – wartet auf Nadia-Feedback)
+- [x] Sitemap & Content-Plan
 - [x] BaseLayout + globale Styles
 - [x] Header + Navigation (inkl. News-Link)
 - [x] Footer (inkl. News-Link)
@@ -23,16 +23,17 @@
 - [x] Demo-Content per Seed-Script eingespielt
 - [ ] Impressum + Datenschutz
 - [ ] SEO-Optimierung (Meta-Tags, Open Graph, strukturierte Daten)
-- [ ] Brand Guide (Farben, Typo, Logo)
+- [x] Brand Guide (Farben, Typo, Logo) – Draft, wartet auf Feedback
 - [ ] QA + Feinschliff (Accessibility, Mobile, Performance)
 - [ ] Fotogalerie (Phase 2?)
-- [ ] Deployment auf Netlify
+- [x] Deployment auf Netlify – LIVE
 - [ ] Sanity Webhook → Netlify Build Hook
-- [ ] Nadia onboarden (Sanity-Zugang, Kurzanleitung)
+- [ ] Nadia onboarden (Sanity-Zugang, Kurzanleitung) – Einladung verschickt
 
 ## Offene Blocker
 - **Impressum:** Nadia muss Adressfrage klären (virtuelle Geschäftsadresse)
-- **Brand Guide:** Noch nicht erstellt – Farben/Typo sind aktuell aus dem Prototyp
+- **Fotos:** Kein Bildmaterial vorhanden – Nadia muss beim nächsten Event fotografieren lassen
+- **Brand-Feedback:** Nadia muss Brand Guide reviewen
 
 ## Technische Details (für nächste Session)
 - **Dev-Server:** `npm run dev` → `http://localhost:4510`
@@ -42,9 +43,13 @@
 - **Seed-Script:** `node --env-file=.env scripts/seed.mjs`
 - **Build:** `npm run build` – läuft fehlerfrei durch
 - **Type-Check:** `npx astro check` – 0 Errors, 0 Warnings, 2 Hints (showHero unused, imageUrlBuilder deprecated)
-- **CORS:** `http://localhost:4510` in Sanity eingetragen (ohne Credentials)
+- **CORS:** `http://localhost:4510` (ohne Credentials) + Netlify-URL (mit Credentials)
 - **React Integration:** Installiert für Sanity Studio Rendering
 - **Astro Output:** `static` (nicht hybrid – wurde in Astro 5 entfernt)
+- **GitHub Repo:** https://github.com/testy090923/salsa-paderborn.git
+- **Netlify:** Verbunden mit GitHub, Auto-Deploy bei Push
+- **Netlify Env Vars:** PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET
+- **netlify.toml:** Build-Command, Publish-Dir, Node 20
 
 ## Dateistruktur (nach Sanity-Integration)
 ```
@@ -106,3 +111,18 @@ sanity.cli.ts            – CLI-Config (Root)
 - Verifiziert: Alle Seiten zeigen Live-Daten aus Sanity
 - Sanity Free Plan geprüft: 20 Seats, 2 Roles, public datasets – reicht locker
 - Alles committed: `feat: integrate Sanity CMS with 5 content types and dynamic pages`
+
+### 2026-03-05 – Session 4: Brand Guide + Redesign + Deployment
+- Brand Research: 12 Referenz-Websites analysiert (salsa.de, latindancecalendar.com, berlinsalsacongress.co, latincologne.de etc.)
+- Brand Guide Draft erstellt: Salsa-Rot #C62828, Gold #F5A623, Terracotta #E65100, Night Navy #1A1A2E, Warm White #FAF7F2
+- Fonts: Sansita (Headlines) + Source Sans 3 (Body), 6 WOFF2 self-hosted
+- Sitemap überarbeitet: Navigation von 7 auf 5 Punkte, neue /szene Hub-Seite
+- Komplettes visuelles Redesign: Hero mit Gradient, Counter-Section, Einstiegs-Weiche, alle Cards
+- FAQ-Block auf Kurse-Seite (native details/summary)
+- CSS Design-Token-System (Custom Properties für Farben, Spacing, Shadows)
+- Umlaut-Bug gefixt (Sub-Agent schrieb ae/oe/ue statt ä/ö/ü)
+- GitHub Repo eingerichtet (testy090923/salsa-paderborn, Nadias Test-Account)
+- netlify.toml erstellt (Build-Config, Node 20)
+- Netlify Deployment erfolgreich – Website ist LIVE
+- Sanity Studio funktioniert online (CORS mit Credentials)
+- Nadia als Editor in Sanity eingeladen
