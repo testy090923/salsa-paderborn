@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Seite nicht gefunden – Salsa Paderborn">
+  <section class="error-page">
+    <div class="error-content">
+      <h1>Ups, diese Seite gibt es nicht.</h1>
+      <p>Vielleicht wurde die Seite verschoben oder der Link ist veraltet. Kein Problem – hier geht's weiter:</p>
+      <nav class="error-links" aria-label="Hilfreiche Links">
+        <a href="/" class="btn btn-primary">Zur Startseite</a>
+        <a href="/events" class="btn btn-secondary">Events</a>
+        <a href="/kurse" class="btn btn-secondary">Kurse</a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2xl) var(--space-md);
+    text-align: center;
+  }
+
+  .error-content {
+    max-width: 500px;
+  }
+
+  .error-content h1 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .error-content p {
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+  }
+
+  .error-links {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

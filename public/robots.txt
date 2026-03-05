@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://salsa-paderborn.de/sitemap-index.xml
