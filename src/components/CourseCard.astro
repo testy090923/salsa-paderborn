@@ -1,0 +1,171 @@
+---
+/**
+ * CourseCard -- Reusable card for the course listing page.
+ *
+ * Based on the kurs-card pattern from kurse.astro.
+ * Expects a Sanity course object with fields matching allCoursesQuery.
+ */
+interface Props {
+  course: {
+    title: string;
+    slug: { current: string };
+    category?: string;
+    level?: string;
+    style?: string;
+    schedule?: string;
+    location?: string;
+    description?: string;
+    partnerRequired?: boolean;
+    image?: any;
+    teacher?: { name: string; slug?: { current: string } };
+    school?: { name: string; slug?: { current: string } };
+  };
+}
+
+const { course } = Astro.props;
+
+// Level color coding
+const levelColors: Record<string, string> = {
+  'Anfänger': '#27ae60',
+  'Mittelstufe': '#e67e22',
+  'Fortgeschritten': '#e74c3c',
+  'Alle': '#3498db',
+};
+const tagColor = levelColors[course.level ?? ''] ?? '#888';
+---
+
+<a href={`/kurse/${course.slug.current}`} class="kurs-card-link">
+  <article class="kurs-card">
+    <div class="kurs-header">
+      {course.level && (
+        <span class="kurs-tag" style={`background: ${tagColor}`}>{course.level}</span>
+      )}
+      {course.category && course.category !== course.level && (
+        <span class="kurs-category">{course.category}</span>
+      )}
+    </div>
+    <h3>{course.title}</h3>
+    {course.schedule && (
+      <p class="kurs-schedule">{course.schedule}</p>
+    )}
+    <p class="kurs-meta">
+      {course.location && <span>{course.location}</span>}
+      {course.teacher?.name && (
+        <span>
+          {' '}&middot;{' '}
+          {course.teacher.slug?.current ? (
+            <a href={`/lehrer/${course.teacher.slug.current}`} class="kurs-teacher-link">
+              {course.teacher.name}
+            </a>
+          ) : (
+            course.teacher.name
+          )}
+        </span>
+      )}
+    </p>
+    {course.school?.name && (
+      <p class="kurs-school">{course.school.name}</p>
+    )}
+    {course.description && (
+      <p class="kurs-desc">{course.description}</p>
+    )}
+    {course.partnerRequired === false && (
+      <span class="kurs-partner-info">Kein Partner nötig</span>
+    )}
+  </article>
+</a>
+
+<style>
+  .kurs-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .kurs-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .kurs-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .kurs-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .kurs-tag {
+    display: inline-block;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .kurs-category {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .kurs-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+
+  .kurs-schedule {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.25rem;
+  }
+
+  .kurs-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.25rem;
+  }
+
+  .kurs-teacher-link {
+    color: #e74c3c;
+    text-decoration: none;
+  }
+  .kurs-teacher-link:hover {
+    text-decoration: underline;
+  }
+
+  .kurs-school {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 0.4rem;
+  }
+
+  .kurs-desc {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .kurs-partner-info {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #27ae60;
+    background: #eafaf1;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+  }
+</style>

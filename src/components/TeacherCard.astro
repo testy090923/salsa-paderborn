@@ -1,0 +1,158 @@
+---
+/**
+ * TeacherCard -- Reusable card for the teacher listing page.
+ *
+ * Based on the teacher-card-full pattern from lehrer/index.astro.
+ * Expects a Sanity teacher object with fields matching allTeachersQuery.
+ */
+import SanityImage from './SanityImage.astro';
+
+interface Props {
+  teacher: {
+    name: string;
+    slug: { current: string };
+    photo?: any;
+    styles?: string[];
+    bio?: any; // Can be plain string or Portable Text array
+    school?: { name: string; slug?: { current: string } };
+  };
+}
+
+const { teacher } = Astro.props;
+
+// Extract a plain-text excerpt from bio.
+// Bio can be a string, a Portable Text array, or undefined.
+function getBioExcerpt(bio: any, maxLength = 150): string {
+  if (!bio) return '';
+  if (typeof bio === 'string') {
+    return bio.length > maxLength ? bio.slice(0, maxLength) + '...' : bio;
+  }
+  // Portable Text: extract text from children of block types
+  if (Array.isArray(bio)) {
+    const text = bio
+      .filter((block: any) => block._type === 'block')
+      .map((block: any) =>
+        (block.children ?? [])
+          .map((child: any) => child.text ?? '')
+          .join('')
+      )
+      .join(' ');
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  }
+  return '';
+}
+
+const bioExcerpt = getBioExcerpt(teacher.bio);
+const stylesText = Array.isArray(teacher.styles) ? teacher.styles.join(', ') : (teacher.styles ?? '');
+---
+
+<a href={`/lehrer/${teacher.slug.current}`} class="teacher-card-link">
+  <article class="teacher-card-full">
+    {teacher.photo ? (
+      <SanityImage
+        source={teacher.photo}
+        alt={teacher.name}
+        width={80}
+        height={80}
+        class="teacher-photo"
+      />
+    ) : (
+      <div class="teacher-avatar-large">{teacher.name.charAt(0)}</div>
+    )}
+    <div class="teacher-content">
+      <h3>{teacher.name}</h3>
+      {stylesText && <p class="teacher-styles">{stylesText}</p>}
+      {teacher.school?.name && (
+        <p class="teacher-school">{teacher.school.name}</p>
+      )}
+      {bioExcerpt && <p class="teacher-bio">{bioExcerpt}</p>}
+      <span class="teacher-link-text">Profil ansehen &rarr;</span>
+    </div>
+  </article>
+</a>
+
+<style>
+  .teacher-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .teacher-card-full {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .teacher-card-full:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .teacher-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .teacher-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .teacher-content {
+    flex: 1;
+  }
+  .teacher-content h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .teacher-styles {
+    font-size: 0.9rem;
+    color: #e74c3c;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+  .teacher-school {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+  .teacher-bio {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+  .teacher-link-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+  }
+  .teacher-card-full:hover .teacher-link-text {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .teacher-card-full {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+</style>

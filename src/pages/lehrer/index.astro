@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TeacherCard from '../../components/TeacherCard.astro';
+import { sanityClient } from '../../lib/sanity';
+import { allTeachersQuery } from '../../lib/queries';
+
+const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
+---
+
+<BaseLayout title="Tanzlehrer:innen – Salsa Paderborn">
+  <div class="page-header">
+    <h1>Tanzlehrer:innen in Paderborn</h1>
+    <p>Lerne von den Besten der lokalen Szene</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      {teachers.length > 0 ? (
+        <div class="teacher-list">
+          {teachers.map((teacher: any) => (
+            <TeacherCard teacher={teacher} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Noch keine Lehrer:innen eingetragen. Schau bald wieder vorbei!</p>
+      )}
+
+      <!-- CTA card: static, not from CMS -->
+      <article class="cta-card">
+        <div class="cta-avatar">+</div>
+        <div class="cta-content">
+          <h2>Werde Teil der Community</h2>
+          <p class="cta-styles">Dein Tanzstil</p>
+          <p class="cta-bio">Du unterrichtest Salsa, Bachata oder Kizomba in Paderborn? Präsentiere dich auf dieser Plattform und erreiche neue Schüler:innen.</p>
+          <a href="/kontakt" class="cta-link">Jetzt mitmachen &rarr;</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .teacher-list { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+  .empty-state {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    padding: 3rem 0;
+  }
+
+  .cta-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 2px dashed #ccc;
+    margin-top: 1.5rem;
+  }
+
+  .cta-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #f0f0f0;
+    color: #aaa;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta-content { flex: 1; }
+  .cta-content h2 { font-size: 1.3rem; margin-bottom: 0.2rem; }
+  .cta-styles { font-size: 0.9rem; color: #27ae60; font-weight: 600; margin-bottom: 0.15rem; }
+  .cta-bio { font-size: 0.95rem; color: #555; margin-bottom: 0.75rem; line-height: 1.5; }
+  .cta-link { font-size: 0.9rem; font-weight: 600; color: #27ae60; text-decoration: none; }
+  .cta-link:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    .cta-card { flex-direction: column; align-items: center; text-align: center; }
+  }
+</style>

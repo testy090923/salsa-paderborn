@@ -1,0 +1,126 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  showHero?: boolean;
+}
+
+const { title, showHero = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Salsa Paderborn – Deine Anlaufstelle für Salsa, Bachata & Kizomba in Paderborn und Umgebung" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+    <style is:global>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: #1a1a1a;
+        background: #faf9f7;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      .section {
+        padding: 4rem 0;
+      }
+      .section-warm {
+        background: #fff5f0;
+      }
+      .section-header {
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+      .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        margin-bottom: 0.25rem;
+        text-align: center;
+      }
+      .section-sub {
+        text-align: center;
+        color: #666;
+        margin-bottom: 2rem;
+      }
+      .section-badge {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        margin-bottom: 0.75rem;
+      }
+      .page-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        color: white;
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      .page-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+      }
+      .page-header p {
+        opacity: 0.8;
+        font-size: 1.05rem;
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: transform 0.2s;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+      .btn-primary {
+        background: #e74c3c;
+        color: white;
+      }
+      .btn-secondary {
+        background: rgba(255,255,255,0.15);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+      }
+      .see-all {
+        display: block;
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #e74c3c;
+        text-decoration: none;
+      }
+      .see-all:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <Nav />
+    <slot />
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,159 @@
+---
+/**
+ * EventCard – Full event card for listing pages.
+ *
+ * Based on the event-card-full pattern from events.astro.
+ * Expects a Sanity event object with fields matching allEventsQuery.
+ */
+interface Props {
+  event: {
+    title: string;
+    slug: { current: string };
+    date: string;
+    endDate?: string;
+    category?: string;
+    location?: string;
+    city?: string;
+    description?: string;
+    price?: string;
+    image?: any;
+    organizer?: { name: string; slug?: { current: string } };
+  };
+}
+
+const { event } = Astro.props;
+
+// Format date in German locale
+const dateObj = new Date(event.date);
+const formattedDate = dateObj.toLocaleDateString('de-DE', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+const formattedTime = dateObj.toLocaleTimeString('de-DE', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
+// Category color coding
+const categoryColors: Record<string, string> = {
+  Party: '#e74c3c',
+  Social: '#9b59b6',
+  Festival: '#e67e22',
+  Sonstiges: '#888',
+};
+const tagColor = categoryColors[event.category ?? ''] ?? '#888';
+---
+
+<a href={`/events/${event.slug.current}`} class="event-card-link">
+  <article class="event-card-full">
+    <div class="event-date-block">
+      <span class="event-day">{formattedDate}</span>
+      <span class="event-time">{formattedTime} Uhr</span>
+    </div>
+    <div class="event-content">
+      {event.category && (
+        <span class="event-tag" style={`background: ${tagColor}`}>{event.category}</span>
+      )}
+      <h3>{event.title}</h3>
+      <p class="event-location">
+        {event.location}{event.city ? `, ${event.city}` : ''}
+      </p>
+      {event.description && (
+        <p class="event-desc">{event.description}</p>
+      )}
+      {event.price && (
+        <p class="event-price">{event.price}</p>
+      )}
+      {event.organizer?.name && (
+        <p class="event-organizer">Veranstalter: {event.organizer.name}</p>
+      )}
+    </div>
+  </article>
+</a>
+
+<style>
+  .event-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .event-card-full {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .event-card-full:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .event-date-block {
+    min-width: 110px;
+    flex-shrink: 0;
+  }
+  .event-day {
+    display: block;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .event-time {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .event-content {
+    flex: 1;
+  }
+  .event-tag {
+    display: inline-block;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .event-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .event-location {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.4rem;
+  }
+  .event-desc {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  .event-price {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e74c3c;
+    margin-top: 0.3rem;
+  }
+  .event-organizer {
+    font-size: 0.8rem;
+    color: #999;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 600px) {
+    .event-card-full {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>

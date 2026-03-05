@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SchoolCard from '../../components/SchoolCard.astro';
+import { sanityClient } from '../../lib/sanity';
+import { allSchoolsQuery } from '../../lib/queries';
+
+const schools = await sanityClient.fetch(allSchoolsQuery) ?? [];
+---
+
+<BaseLayout title="Tanzschulen – Salsa Paderborn">
+  <div class="page-header">
+    <h1>Tanzschulen in Paderborn</h1>
+    <p>Schulen und Vereine, die Paderborn zum Tanzen bringen</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      {schools.length > 0 ? (
+        <div class="school-list">
+          {schools.map((school: any) => (
+            <SchoolCard school={school} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Noch keine Tanzschulen eingetragen. Schau bald wieder vorbei!</p>
+      )}
+    </div>
+  </section>
+
+  <!-- Static CTA section -->
+  <section class="section section-warm">
+    <div class="container cta-block">
+      <h2 class="section-title">Gemeinsam stärker</h2>
+      <p class="section-sub">Salsa Paderborn ist ein Community-Projekt. Alle Tanzschulen und Vereine in der Region sind eingeladen, Teil der Plattform zu werden – kostenlos und gleichberechtigt.</p>
+      <a href="/kontakt" class="btn btn-primary">Tanzschule anmelden</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .school-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .empty-state {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    padding: 3rem 0;
+  }
+
+  .cta-block { text-align: center; }
+  .cta-block .btn { margin-top: 1rem; }
+</style>

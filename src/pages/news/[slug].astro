@@ -1,0 +1,328 @@
+---
+/**
+ * Dynamic blog post detail page.
+ *
+ * Fetches a single blog post from Sanity by slug, renders
+ * title, date, author, featured image, body (PortableText), and tags.
+ * Article-style layout with max-width for readability.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import { PortableText } from 'astro-portabletext';
+import { sanityClient } from '../../lib/sanity';
+import { blogPostBySlugQuery } from '../../lib/queries';
+
+export async function getStaticPaths() {
+  const posts = await sanityClient.fetch(`*[_type == "blogPost"]{ slug }`);
+  return posts
+    .filter((item: any) => item.slug?.current)
+    .map((item: any) => ({
+      params: { slug: item.slug.current },
+    }));
+}
+
+const { slug } = Astro.params;
+const post = await sanityClient.fetch(blogPostBySlugQuery, { slug });
+
+if (!post) {
+  return Astro.redirect('/news');
+}
+
+// Format published date in German
+let formattedDate: string | null = null;
+if (post.publishedAt) {
+  const dateObj = new Date(post.publishedAt);
+  formattedDate = dateObj.toLocaleDateString('de-DE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+---
+
+<BaseLayout title={`${post.title} – Salsa Paderborn`}>
+  <div class="page-header">
+    <h1>{post.title}</h1>
+    {formattedDate && <p>{formattedDate}</p>}
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <a href="/news" class="back-link">&larr; Alle News</a>
+
+      <article class="article">
+        {post.image && (
+          <div class="article-hero">
+            <SanityImage source={post.image} alt={post.title} width={800} />
+          </div>
+        )}
+
+        <div class="article-meta">
+          {formattedDate && (
+            <time class="article-date">{formattedDate}</time>
+          )}
+          {post.author?.name && (
+            <span class="article-author">
+              von{' '}
+              {post.author.slug?.current ? (
+                <a href={`/lehrer/${post.author.slug.current}`}>{post.author.name}</a>
+              ) : (
+                <strong>{post.author.name}</strong>
+              )}
+            </span>
+          )}
+        </div>
+
+        {post.excerpt && (
+          <p class="article-excerpt">{post.excerpt}</p>
+        )}
+
+        {post.body && (
+          <div class="article-body">
+            <PortableText value={post.body} />
+          </div>
+        )}
+
+        {post.tags?.length > 0 && (
+          <div class="article-tags">
+            {post.tags.map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+
+        {post.author?.name && (
+          <div class="author-box">
+            <div class="author-avatar">
+              {post.author.photo ? (
+                <SanityImage
+                  source={post.author.photo}
+                  alt={post.author.name}
+                  width={56}
+                  height={56}
+                  class="author-photo"
+                />
+              ) : (
+                <span class="author-letter">{post.author.name.charAt(0)}</span>
+              )}
+            </div>
+            <div class="author-info">
+              <strong>{post.author.name}</strong>
+              {post.author.styles?.length > 0 && (
+                <span class="author-styles">{post.author.styles.join(', ')}</span>
+              )}
+              {post.author.slug?.current && (
+                <a href={`/lehrer/${post.author.slug.current}`} class="author-profile-link">
+                  Profil ansehen &rarr;
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .article {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .article-hero :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #888;
+  }
+
+  .article-date {
+    font-weight: 600;
+    color: #666;
+  }
+
+  .article-author a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .article-author a:hover {
+    text-decoration: underline;
+  }
+
+  .article-excerpt {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.6;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .article-body {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .article-body :global(p) {
+    margin-bottom: 1rem;
+  }
+  .article-body :global(h2) {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #1a1a1a;
+  }
+  .article-body :global(h3) {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+  }
+  .article-body :global(strong) {
+    font-weight: 600;
+  }
+  .article-body :global(a) {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .article-body :global(a:hover) {
+    text-decoration: underline;
+  }
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .article-body :global(li) {
+    margin-bottom: 0.25rem;
+  }
+  .article-body :global(blockquote) {
+    border-left: 3px solid #e74c3c;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #555;
+  }
+  .article-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #555;
+  }
+
+  .author-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #faf9f7;
+    border-radius: 12px;
+    border-left: 3px solid #e74c3c;
+  }
+
+  .author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .author-avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .author-letter {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .author-info strong {
+    font-size: 1rem;
+  }
+  .author-styles {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .author-profile-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+  }
+  .author-profile-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .article-meta {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>

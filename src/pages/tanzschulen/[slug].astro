@@ -1,0 +1,429 @@
+---
+/**
+ * Dynamic dance school detail page.
+ *
+ * Fetches a single dance school from Sanity by slug, renders
+ * logo, focus styles, location, description, offerings,
+ * and reverse-referenced events and courses.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import EventCard from '../../components/EventCard.astro';
+import { PortableText } from 'astro-portabletext';
+import { sanityClient } from '../../lib/sanity';
+import { schoolBySlugQuery } from '../../lib/queries';
+
+export async function getStaticPaths() {
+  const schools = await sanityClient.fetch(`*[_type == "danceSchool"]{ slug }`);
+  return schools
+    .filter((item: any) => item.slug?.current)
+    .map((item: any) => ({
+      params: { slug: item.slug.current },
+    }));
+}
+
+const { slug } = Astro.params;
+const school = await sanityClient.fetch(schoolBySlugQuery, { slug });
+
+if (!school) {
+  return Astro.redirect('/tanzschulen');
+}
+
+// Level color coding for course list items
+const levelColors: Record<string, string> = {
+  'Anfänger': '#27ae60',
+  'Mittelstufe': '#e67e22',
+  'Fortgeschritten': '#e74c3c',
+  'Alle': '#3498db',
+};
+---
+
+<BaseLayout title={`${school.name} – Salsa Paderborn`}>
+  <div class="page-header">
+    <h1>{school.name}</h1>
+    {school.focus?.length > 0 && <p>{school.focus.join(' · ')}</p>}
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <a href="/tanzschulen" class="back-link">&larr; Alle Tanzschulen</a>
+
+      <div class="school-profile">
+        <div class="school-header">
+          <div class="school-logo-wrapper">
+            {school.logo ? (
+              <SanityImage
+                source={school.logo}
+                alt={`${school.name} Logo`}
+                width={80}
+                height={80}
+                class="school-logo-img"
+              />
+            ) : (
+              <div class="school-logo-fallback">{school.name.charAt(0)}</div>
+            )}
+          </div>
+          <div class="school-header-info">
+            {school.location && (
+              <p class="school-location">{school.location}</p>
+            )}
+            {school.focus?.length > 0 && (
+              <div class="school-focus-tags">
+                {school.focus.map((style: string) => (
+                  <span class="focus-tag">{style}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div class="school-body">
+          {school.description && (
+            <div class="description-section">
+              <h2>Über {school.name}</h2>
+              <div class="description-text">
+                <PortableText value={school.description} />
+              </div>
+            </div>
+          )}
+
+          {school.angebot?.length > 0 && (
+            <div class="angebot-section">
+              <h2>Angebot</h2>
+              <div class="angebot-tags">
+                {school.angebot.map((item: string) => (
+                  <span class="angebot-tag">{item}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(school.website || school.contact) && (
+            <div class="contact-section">
+              <h2>Kontakt</h2>
+              <div class="contact-links">
+                {school.website && (
+                  <a href={school.website} target="_blank" rel="noopener noreferrer" class="contact-link">
+                    Website besuchen &rarr;
+                  </a>
+                )}
+                {school.contact?.email && (
+                  <a href={`mailto:${school.contact.email}`} class="contact-link">
+                    {school.contact.email}
+                  </a>
+                )}
+                {school.contact?.phone && (
+                  <a href={`tel:${school.contact.phone}`} class="contact-link">
+                    {school.contact.phone}
+                  </a>
+                )}
+                {school.contact?.instagram && (
+                  <a
+                    href={`https://instagram.com/${school.contact.instagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-link"
+                  >
+                    @{school.contact.instagram.replace('@', '')} auf Instagram
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {school.events?.length > 0 && (
+        <div class="related-section">
+          <h2 class="section-title">Kommende Events</h2>
+          <div class="event-list">
+            {school.events.map((event: any) => (
+              <EventCard event={event} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {school.courses?.length > 0 && (
+        <div class="related-section">
+          <h2 class="section-title">Kurse</h2>
+          <div class="course-list">
+            {school.courses.map((course: any) => (
+              <a
+                href={course.slug?.current ? `/kurse/${course.slug.current}` : '#'}
+                class="course-item-link"
+              >
+                <div class="course-item">
+                  <div class="course-item-header">
+                    <h3>{course.title}</h3>
+                    {course.level && (
+                      <span
+                        class="course-level"
+                        style={`background: ${levelColors[course.level] ?? '#888'}`}
+                      >
+                        {course.level}
+                      </span>
+                    )}
+                  </div>
+                  <p class="course-item-meta">
+                    {course.schedule && <span>{course.schedule}</span>}
+                    {course.location && <span> · {course.location}</span>}
+                  </p>
+                  {course.teacher?.name && (
+                    <p class="course-teacher">
+                      Lehrer:in: {course.teacher.slug?.current ? (
+                        <a href={`/lehrer/${course.teacher.slug.current}`}>{course.teacher.name}</a>
+                      ) : (
+                        course.teacher.name
+                      )}
+                    </p>
+                  )}
+                  {course.style && (
+                    <span class="course-style">{course.style}</span>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .school-profile {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
+  }
+
+  .school-header {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .school-logo-wrapper {
+    flex-shrink: 0;
+  }
+
+  .school-logo-wrapper :global(.school-logo-img) {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .school-logo-fallback {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .school-header-info {
+    flex: 1;
+  }
+
+  .school-location {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+
+  .school-focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .focus-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: #f5eeff;
+    color: #8e44ad;
+  }
+
+  .school-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .description-section,
+  .angebot-section,
+  .contact-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .description-text {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  .description-text :global(p) {
+    margin-bottom: 0.75rem;
+  }
+  .description-text :global(a) {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .description-text :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .angebot-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .angebot-tag {
+    font-size: 0.8rem;
+    background: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    color: #555;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+  }
+  .contact-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Related sections */
+  .related-section {
+    margin-bottom: 2rem;
+  }
+
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .course-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .course-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .course-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 3px solid #8e44ad;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .course-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .course-item-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .course-item h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .course-level {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .course-item-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.15rem;
+  }
+
+  .course-teacher {
+    font-size: 0.8rem;
+    color: #999;
+  }
+  .course-teacher a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .course-teacher a:hover {
+    text-decoration: underline;
+  }
+
+  .course-style {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #9b59b6;
+    background: #f5eeff;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    margin-top: 0.3rem;
+  }
+
+  @media (max-width: 600px) {
+    .school-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    .school-focus-tags {
+      justify-content: center;
+    }
+  }
+</style>

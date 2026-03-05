@@ -1,0 +1,181 @@
+---
+/**
+ * BlogCard -- Reusable card for the blog/news listing page.
+ *
+ * Card with image on top, content below. Follows the warm/neutral design system.
+ * Expects a Sanity blogPost object with fields matching allBlogPostsQuery.
+ */
+import SanityImage from './SanityImage.astro';
+
+interface Props {
+  post: {
+    title: string;
+    slug: { current: string };
+    publishedAt?: string;
+    excerpt?: string;
+    image?: any;
+    tags?: string[];
+    author?: { name: string; slug?: { current: string } };
+  };
+}
+
+const { post } = Astro.props;
+
+// Format published date in German locale
+let formattedDate = '';
+if (post.publishedAt) {
+  const dateObj = new Date(post.publishedAt);
+  formattedDate = dateObj.toLocaleDateString('de-DE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+---
+
+<a href={`/news/${post.slug.current}`} class="blog-card-link">
+  <article class="blog-card">
+    <div class="blog-card-image">
+      {post.image ? (
+        <SanityImage
+          source={post.image}
+          alt={post.title}
+          width={600}
+          height={340}
+          class="blog-img"
+        />
+      ) : (
+        <div class="blog-img-placeholder">
+          <span>{post.title.charAt(0)}</span>
+        </div>
+      )}
+    </div>
+    <div class="blog-card-body">
+      {formattedDate && (
+        <p class="blog-date">{formattedDate}</p>
+      )}
+      <h3>{post.title}</h3>
+      {post.excerpt && (
+        <p class="blog-excerpt">{post.excerpt}</p>
+      )}
+      <div class="blog-card-footer">
+        {post.tags && post.tags.length > 0 && (
+          <div class="blog-tags">
+            {post.tags.map((tag) => (
+              <span class="blog-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+        {post.author?.name && (
+          <p class="blog-author">von {post.author.name}</p>
+        )}
+      </div>
+    </div>
+  </article>
+</a>
+
+<style>
+  .blog-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .blog-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .blog-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .blog-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  .blog-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .blog-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    opacity: 0.8;
+  }
+
+  .blog-card-body {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .blog-date {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 0.4rem;
+  }
+
+  .blog-card-body h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .blog-excerpt {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    /* Clamp to 3 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .blog-tag {
+    font-size: 0.7rem;
+    background: #f0f0f0;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+  }
+
+  .blog-author {
+    font-size: 0.8rem;
+    color: #999;
+  }
+</style>

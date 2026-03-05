@@ -1,0 +1,155 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: "/", label: "Start" },
+  { href: "/events", label: "Events" },
+  { href: "/kurse", label: "Kurse" },
+  { href: "/lehrer", label: "Lehrer:innen" },
+  { href: "/tanzschulen", label: "Tanzschulen" },
+  { href: "/news", label: "News" },
+  { href: "/kontakt", label: "Kontakt" },
+];
+---
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Salsa Paderborn</a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+    <label for="nav-toggle" class="nav-toggle-label">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <ul class="nav-links">
+      {links.map(link => (
+        <li>
+          <a
+            href={link.href}
+            class:list={["nav-link", { active: currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href)) }]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    background: #1a1a2e;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .nav-link.active {
+    color: white;
+    background: rgba(255,255,255,0.15);
+  }
+
+  /* Mobile hamburger */
+  .nav-toggle-checkbox {
+    display: none;
+  }
+
+  .nav-toggle-label {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .nav-toggle-label span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  @media (max-width: 700px) {
+    .nav-toggle-label {
+      display: flex;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: #1a1a2e;
+      flex-direction: column;
+      padding: 0.5rem 1.5rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .nav-toggle-checkbox:checked ~ .nav-links {
+      display: flex;
+    }
+
+    .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 4px);
+    }
+
+    .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle-checkbox:checked ~ .nav-toggle-label span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -4px);
+    }
+
+    .nav-link {
+      padding: 0.6rem 0.5rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>

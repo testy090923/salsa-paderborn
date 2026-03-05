@@ -1,0 +1,66 @@
+---
+/**
+ * SanityImage – Reusable image component using Sanity's image pipeline.
+ *
+ * Renders an optimised <img> when a Sanity image source is provided.
+ * Falls back to a neutral placeholder with the alt text when no source exists.
+ */
+import { urlFor } from '../lib/sanity';
+
+interface Props {
+  source: any;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+}
+
+const { source, alt, width = 800, height, class: className } = Astro.props;
+
+let imageUrl: string | undefined;
+
+if (source) {
+  let builder = urlFor(source);
+  if (builder) {
+    builder = builder.width(width);
+    if (height) {
+      builder = builder.height(height);
+    }
+    imageUrl = builder.auto('format').url();
+  }
+}
+---
+
+{imageUrl ? (
+  <img
+    src={imageUrl}
+    alt={alt}
+    width={width}
+    height={height}
+    loading="lazy"
+    decoding="async"
+    class:list={[className]}
+  />
+) : (
+  <div class:list={['sanity-image-placeholder', className]} role="img" aria-label={alt}>
+    <span class="placeholder-text">{alt.charAt(0).toUpperCase()}</span>
+  </div>
+)}
+
+<style>
+  .sanity-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    overflow: hidden;
+  }
+
+  .placeholder-text {
+    line-height: 1;
+    user-select: none;
+  }
+</style>

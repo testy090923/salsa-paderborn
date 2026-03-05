@@ -1,0 +1,355 @@
+---
+/**
+ * Dynamic teacher detail page.
+ *
+ * Replaces the static lehrer/nadia.astro page.
+ * Fetches a single teacher from Sanity by slug, renders profile
+ * with photo/avatar, bio (PortableText), courses list, and contact info.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import { PortableText } from 'astro-portabletext';
+import { sanityClient } from '../../lib/sanity';
+import { teacherBySlugQuery } from '../../lib/queries';
+
+export async function getStaticPaths() {
+  const teachers = await sanityClient.fetch(`*[_type == "teacher"]{ slug }`);
+  return teachers
+    .filter((item: any) => item.slug?.current)
+    .map((item: any) => ({
+      params: { slug: item.slug.current },
+    }));
+}
+
+const { slug } = Astro.params;
+const teacher = await sanityClient.fetch(teacherBySlugQuery, { slug });
+
+if (!teacher) {
+  return Astro.redirect('/lehrer');
+}
+
+// Level color coding for course list items
+const levelColors: Record<string, string> = {
+  'Anfänger': '#27ae60',
+  'Mittelstufe': '#e67e22',
+  'Fortgeschritten': '#e74c3c',
+  'Alle': '#3498db',
+};
+---
+
+<BaseLayout title={`${teacher.name} – Tanzlehrer:in in Paderborn`}>
+  <div class="page-header">
+    <h1>{teacher.name}</h1>
+    <p>
+      Tanzlehrer:in
+      {teacher.styles?.length > 0 && ` · ${teacher.styles.join(', ')}`}
+      {teacher.school?.name && ` · ${teacher.school.name}`}
+    </p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <a href="/lehrer" class="back-link">&larr; Alle Lehrer:innen</a>
+
+      <div class="profile">
+        <div class="profile-avatar-wrapper">
+          {teacher.photo ? (
+            <SanityImage
+              source={teacher.photo}
+              alt={teacher.name}
+              width={120}
+              height={120}
+              class="profile-photo"
+            />
+          ) : (
+            <div class="profile-avatar">{teacher.name.charAt(0)}</div>
+          )}
+        </div>
+
+        <div class="profile-content">
+          <div class="profile-meta">
+            {teacher.school?.name && (
+              <span class="meta-tag">
+                {teacher.school.slug?.current ? (
+                  <a href={`/tanzschulen/${teacher.school.slug.current}`}>{teacher.school.name}</a>
+                ) : (
+                  teacher.school.name
+                )}
+              </span>
+            )}
+            {teacher.styles?.map((style: string) => (
+              <span class="meta-tag">{style}</span>
+            ))}
+          </div>
+
+          {teacher.bio && (
+            <div class="bio-section">
+              <h2>Über {teacher.name}</h2>
+              <div class="bio-text">
+                <PortableText value={teacher.bio} />
+              </div>
+            </div>
+          )}
+
+          {teacher.courses && teacher.courses.length > 0 && (
+            <div class="courses-section">
+              <h2>Aktuelle Kurse</h2>
+              <div class="kurse-list">
+                {teacher.courses.map((course: any) => (
+                  <a
+                    href={course.slug?.current ? `/kurse/${course.slug.current}` : '#'}
+                    class="kurs-item-link"
+                  >
+                    <div class="kurs-item">
+                      <div class="kurs-item-header">
+                        <h3>{course.title}</h3>
+                        {course.level && (
+                          <span
+                            class="kurs-level"
+                            style={`background: ${levelColors[course.level] ?? '#888'}`}
+                          >
+                            {course.level}
+                          </span>
+                        )}
+                      </div>
+                      <p class="kurs-item-meta">
+                        {course.schedule && <span>{course.schedule}</span>}
+                        {course.location && <span> · {course.location}</span>}
+                      </p>
+                      {course.style && (
+                        <span class="kurs-style">{course.style}</span>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(teacher.contact || teacher.website) && (
+            <div class="contact-section">
+              <h2>Kontakt</h2>
+              <div class="contact-links">
+                {teacher.contact?.email && (
+                  <a href={`mailto:${teacher.contact.email}`} class="contact-link">
+                    {teacher.contact.email}
+                  </a>
+                )}
+                {teacher.website && (
+                  <a href={teacher.website} target="_blank" rel="noopener noreferrer" class="contact-link">
+                    Website besuchen &rarr;
+                  </a>
+                )}
+                {teacher.contact?.instagram && (
+                  <a
+                    href={`https://instagram.com/${teacher.contact.instagram.replace('@', '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-link"
+                  >
+                    @{teacher.contact.instagram.replace('@', '')} auf Instagram
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .profile {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .profile-avatar-wrapper {
+    flex-shrink: 0;
+  }
+
+  .profile-avatar-wrapper :global(.profile-photo) {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-content {
+    flex: 1;
+  }
+
+  .profile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .meta-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    background: #fde8e8;
+    color: #e74c3c;
+  }
+  .meta-tag a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .meta-tag a:hover {
+    text-decoration: underline;
+  }
+
+  .bio-section,
+  .courses-section,
+  .contact-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+
+  .bio-text {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  .bio-text :global(p) {
+    margin-bottom: 0.75rem;
+  }
+  .bio-text :global(a) {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .bio-text :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .kurse-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .kurs-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .kurs-item {
+    background: #faf9f7;
+    border-radius: 8px;
+    padding: 1rem;
+    border-left: 3px solid #e74c3c;
+    transition: box-shadow 0.2s;
+  }
+  .kurs-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .kurs-item-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .kurs-item h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .kurs-level {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .kurs-item-meta {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .kurs-style {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #9b59b6;
+    background: #f5eeff;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    margin-top: 0.3rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+  }
+  .contact-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .profile {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .profile-meta {
+      justify-content: center;
+    }
+    .kurs-item {
+      text-align: left;
+    }
+    .contact-links {
+      align-items: center;
+    }
+  }
+</style>

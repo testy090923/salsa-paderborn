@@ -1,0 +1,371 @@
+---
+/**
+ * Dynamic course detail page.
+ *
+ * Fetches a single course from Sanity by slug and renders
+ * level, style, schedule, teacher/school references, and description.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SanityImage from '../../components/SanityImage.astro';
+import { sanityClient } from '../../lib/sanity';
+import { courseBySlugQuery } from '../../lib/queries';
+
+export async function getStaticPaths() {
+  const courses = await sanityClient.fetch(`*[_type == "course"]{ slug }`);
+  return courses
+    .filter((item: any) => item.slug?.current)
+    .map((item: any) => ({
+      params: { slug: item.slug.current },
+    }));
+}
+
+const { slug } = Astro.params;
+const course = await sanityClient.fetch(courseBySlugQuery, { slug });
+
+if (!course) {
+  return Astro.redirect('/kurse');
+}
+
+// Level color coding (matching CourseCard)
+const levelColors: Record<string, string> = {
+  'Anfänger': '#27ae60',
+  'Mittelstufe': '#e67e22',
+  'Fortgeschritten': '#e74c3c',
+  'Alle': '#3498db',
+};
+const tagColor = levelColors[course.level ?? ''] ?? '#888';
+
+// Style color coding
+const styleColors: Record<string, string> = {
+  'Salsa': '#e74c3c',
+  'Bachata': '#9b59b6',
+  'Kizomba': '#2980b9',
+  'Sonstiges': '#888',
+};
+const styleColor = styleColors[course.style ?? ''] ?? '#888';
+
+// Format start date if available
+let formattedStartDate: string | null = null;
+if (course.startDate) {
+  const startObj = new Date(course.startDate);
+  formattedStartDate = startObj.toLocaleDateString('de-DE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+---
+
+<BaseLayout title={`${course.title} – Salsa Paderborn`}>
+  <div class="page-header">
+    <h1>{course.title}</h1>
+    {course.schedule && <p>{course.schedule}</p>}
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <a href="/kurse" class="back-link">&larr; Alle Kurse</a>
+
+      <div class="detail-card">
+        {course.image && (
+          <div class="detail-image">
+            <SanityImage source={course.image} alt={course.title} width={800} />
+          </div>
+        )}
+
+        <div class="detail-body">
+          <div class="detail-tags">
+            {course.level && (
+              <span class="level-tag" style={`background: ${tagColor}`}>{course.level}</span>
+            )}
+            {course.style && (
+              <span class="style-tag" style={`background: ${styleColor}`}>{course.style}</span>
+            )}
+            {course.category && (
+              <span class="category-label">{course.category}</span>
+            )}
+          </div>
+
+          {course.partnerRequired === false && (
+            <span class="partner-badge">Kein Partner nötig</span>
+          )}
+
+          <div class="detail-meta">
+            {course.schedule && (
+              <div class="meta-row">
+                <span class="meta-label">Zeitplan</span>
+                <span class="meta-value">{course.schedule}</span>
+              </div>
+            )}
+            {formattedStartDate && (
+              <div class="meta-row">
+                <span class="meta-label">Start</span>
+                <span class="meta-value">{formattedStartDate}</span>
+              </div>
+            )}
+            {course.location && (
+              <div class="meta-row">
+                <span class="meta-label">Ort</span>
+                <span class="meta-value">{course.location}</span>
+              </div>
+            )}
+            {course.teacher?.name && (
+              <div class="meta-row">
+                <span class="meta-label">Lehrer:in</span>
+                <span class="meta-value">
+                  {course.teacher.slug?.current ? (
+                    <a href={`/lehrer/${course.teacher.slug.current}`}>{course.teacher.name}</a>
+                  ) : (
+                    course.teacher.name
+                  )}
+                </span>
+              </div>
+            )}
+            {course.school?.name && (
+              <div class="meta-row">
+                <span class="meta-label">Tanzschule</span>
+                <span class="meta-value">
+                  {course.school.slug?.current ? (
+                    <a href={`/tanzschulen/${course.school.slug.current}`}>{course.school.name}</a>
+                  ) : (
+                    course.school.name
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {course.description && (
+            <div class="detail-description">
+              <h2>Beschreibung</h2>
+              <p>{course.description}</p>
+            </div>
+          )}
+
+          {course.teacher?.name && (
+            <div class="teacher-preview">
+              <div class="teacher-avatar">
+                {course.teacher.photo ? (
+                  <SanityImage
+                    source={course.teacher.photo}
+                    alt={course.teacher.name}
+                    width={48}
+                    height={48}
+                    class="teacher-photo"
+                  />
+                ) : (
+                  <span class="teacher-letter">{course.teacher.name.charAt(0)}</span>
+                )}
+              </div>
+              <div class="teacher-info">
+                <strong>{course.teacher.name}</strong>
+                {course.teacher.styles && (
+                  <span class="teacher-styles">{course.teacher.styles.join(', ')}</span>
+                )}
+              </div>
+              {course.teacher.slug?.current && (
+                <a href={`/lehrer/${course.teacher.slug.current}`} class="teacher-profile-link">
+                  Profil &rarr;
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  .detail-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .detail-image {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+  }
+  .detail-image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detail-body {
+    padding: 1.5rem;
+  }
+
+  .detail-tags {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .level-tag,
+  .style-tag {
+    display: inline-block;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .category-label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .partner-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #27ae60;
+    background: #eafaf1;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #faf9f7;
+    border-radius: 8px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .meta-label {
+    min-width: 100px;
+    font-weight: 600;
+    color: #666;
+    flex-shrink: 0;
+  }
+
+  .meta-value {
+    color: #333;
+  }
+  .meta-value a {
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .meta-value a:hover {
+    text-decoration: underline;
+  }
+
+  .detail-description {
+    margin-bottom: 1.5rem;
+  }
+  .detail-description h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .detail-description p {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  .teacher-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #faf9f7;
+    border-radius: 8px;
+    border-left: 3px solid #e74c3c;
+  }
+
+  .teacher-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .teacher-avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .teacher-letter {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .teacher-info {
+    flex: 1;
+  }
+  .teacher-info strong {
+    display: block;
+    font-size: 0.95rem;
+  }
+  .teacher-styles {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .teacher-profile-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e74c3c;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .teacher-profile-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .meta-row {
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .meta-label {
+      min-width: auto;
+      font-size: 0.8rem;
+    }
+    .teacher-preview {
+      flex-wrap: wrap;
+    }
+  }
+</style>

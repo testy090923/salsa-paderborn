@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { sanityClient } from '../../lib/sanity';
+import { allBlogPostsQuery } from '../../lib/queries';
+
+const posts = await sanityClient.fetch(allBlogPostsQuery) ?? [];
+---
+
+<BaseLayout title="News & Stories – Salsa Paderborn">
+  <div class="page-header">
+    <h1>News & Stories</h1>
+    <p>Neuigkeiten aus der Salsa-Szene in Paderborn</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      {posts.length > 0 ? (
+        <div class="blog-grid">
+          {posts.map((post: any) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Noch keine News. Bald gibt's hier Neuigkeiten aus der Szene!</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    padding: 3rem 0;
+  }
+</style>

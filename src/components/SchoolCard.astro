@@ -1,0 +1,182 @@
+---
+/**
+ * SchoolCard -- Reusable card for the dance school listing page.
+ *
+ * Based on the school-card pattern from tanzschulen.astro.
+ * Expects a Sanity danceSchool object with fields matching allSchoolsQuery.
+ */
+import SanityImage from './SanityImage.astro';
+
+interface Props {
+  school: {
+    name: string;
+    slug: { current: string };
+    logo?: any;
+    focus?: string[];
+    location?: string;
+    description?: any; // Portable Text array or string
+    angebot?: string[];
+    website?: string;
+  };
+}
+
+const { school } = Astro.props;
+
+const focusText = Array.isArray(school.focus) ? school.focus.join(', ') : (school.focus ?? '');
+
+// Extract plain text from Portable Text or string description
+function getDescExcerpt(desc: any, maxLength = 180): string {
+  if (!desc) return '';
+  if (typeof desc === 'string') {
+    return desc.length > maxLength ? desc.slice(0, maxLength) + '...' : desc;
+  }
+  if (Array.isArray(desc)) {
+    const text = desc
+      .filter((block: any) => block._type === 'block')
+      .map((block: any) =>
+        (block.children ?? [])
+          .map((child: any) => child.text ?? '')
+          .join('')
+      )
+      .join(' ');
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  }
+  return '';
+}
+
+const descExcerpt = getDescExcerpt(school.description);
+---
+
+<a href={`/tanzschulen/${school.slug.current}`} class="school-card-link">
+  <article class="school-card">
+    {school.logo ? (
+      <SanityImage
+        source={school.logo}
+        alt={school.name}
+        width={64}
+        height={64}
+        class="school-logo-img"
+      />
+    ) : (
+      <div class="school-logo-fallback">{school.name.charAt(0)}</div>
+    )}
+    <div class="school-content">
+      <h3>{school.name}</h3>
+      {focusText && <p class="school-focus">{focusText}</p>}
+      {school.location && <p class="school-location">{school.location}</p>}
+      {descExcerpt && <p class="school-desc">{descExcerpt}</p>}
+      {school.angebot && school.angebot.length > 0 && (
+        <div class="school-angebot">
+          {school.angebot.map((a) => (
+            <span class="angebot-tag">{a}</span>
+          ))}
+        </div>
+      )}
+      <span class="school-link-text">Mehr erfahren &rarr;</span>
+    </div>
+  </article>
+</a>
+
+<style>
+  .school-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .school-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s;
+  }
+  .school-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .school-logo-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .school-logo-fallback {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    background: #e74c3c;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .school-content {
+    flex: 1;
+  }
+  .school-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .school-focus {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8e44ad;
+    margin-bottom: 0.1rem;
+  }
+  .school-location {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+  }
+  .school-desc {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .school-angebot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .angebot-tag {
+    font-size: 0.75rem;
+    background: #f0f0f0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    color: #555;
+  }
+
+  .school-link-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #8e44ad;
+  }
+  .school-card:hover .school-link-text {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .school-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .school-angebot {
+      justify-content: center;
+    }
+  }
+</style>
