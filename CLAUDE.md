@@ -39,6 +39,9 @@ salsa-web-agency/
 │   ├── brand.md           ← Markenentscheidungen
 │   ├── sitemap.md         ← Seitenstruktur
 │   └── meeting-notes.md   ← Meeting-Protokoll
+├── feedback/
+│   ├── inbox.md           ← Feedback-Eingang (Andy schreibt, Agent verarbeitet)
+│   └── log.md             ← Verarbeitetes Feedback mit Status
 ├── briefings/             ← Briefing-Dokumente fuer direkte Agent-Sessions
 ├── progress/
 │   ├── build-log.md       ← Was gebaut ist, was offen ist
@@ -66,9 +69,10 @@ salsa-web-agency/
 |-------|---------|--------|
 | `/meeting` | Meeting-Modus starten, Discovery Agent fuer Live-Begleitung aktivieren | sonnet |
 | `/zusammenfassung` | Meeting-Zusammenfassung + offene Fragen + naechste Schritte generieren | sonnet |
-| `/status` | Aktueller Build-Fortschritt auf einen Blick | haiku |
+| `/project-status` | Aktueller Build-Fortschritt auf einen Blick | haiku |
 | `/deploy-check` | Prueft ob die Site deployment-ready ist | sonnet |
 | `/audit-content` | Content auf KI-erkennbare Muster prüfen (GPTisms, Design-Tells) | sonnet |
+| `/process-feedback` | Feedback aus Inbox verarbeiten, kategorisieren, bewerten | sonnet |
 
 ## Knowledge
 
