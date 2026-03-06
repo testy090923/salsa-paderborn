@@ -1,0 +1,512 @@
+---
+// Variante 3: "Ciudad Fresca" – Violet & Lime, fresh, modern, pill-buttons
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VariantSwitcher from '../components/VariantSwitcher.astro';
+import { sanityClient } from '../lib/sanity';
+import { homepageQuery } from '../lib/queries';
+
+const data = await sanityClient.fetch(homepageQuery);
+const events = data?.events ?? [];
+const courses = data?.courses ?? [];
+const totalEvents = data?.totalEvents ?? 0;
+const totalCourses = data?.totalCourses ?? 0;
+const totalTeachers = data?.totalTeachers ?? 0;
+const totalSchools = data?.totalSchools ?? 0;
+
+// Category color coding for events (variant 3 colors)
+const categoryColors: Record<string, string> = {
+  Party: '#FF8A65',
+  Social: '#6C3FC5',
+  Festival: '#39B54A',
+  Sonstiges: '#7E7C8C',
+};
+
+// Level color coding for courses
+const levelColors: Record<string, string> = {
+  'Anfänger': '#39B54A',
+  'Mittelstufe': '#FF8A65',
+  'Fortgeschritten': '#6C3FC5',
+  'Alle': '#1565C0',
+};
+
+// Format date in German locale
+function formatDate(isoDate: string): string {
+  const d = new Date(isoDate);
+  return d.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+function formatTime(isoDate: string): string {
+  const d = new Date(isoDate);
+  return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+---
+
+<BaseLayout
+  title="Variante 3: Ciudad Fresca – Salsa Paderborn"
+  description="Design-Variante 3: Ciudad Fresca – Violet & Lime, frisch, modern, Pill-Buttons"
+>
+  <VariantSwitcher current={3} />
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-inner">
+      <h1 class="hero-headline">Salsa in Paderborn?<br /><span class="hero-highlight">Oh ja.</span></h1>
+      <p class="hero-sub">Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.</p>
+    </div>
+  </section>
+
+  <!-- Diese Woche Counter -->
+  {(totalEvents > 0 || totalCourses > 0) && (
+    <section class="counter-section">
+      <div class="container">
+        <div class="counter-grid">
+          <div class="counter-item">
+            <span class="counter-number">{totalEvents}</span>
+            <span class="counter-label">{totalEvents === 1 ? 'Event' : 'Events'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalCourses}</span>
+            <span class="counter-label">{totalCourses === 1 ? 'Kurs' : 'Kurse'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalTeachers + totalSchools}</span>
+            <span class="counter-label">Szene</span>
+          </div>
+        </div>
+        <p class="counter-note">In Paderborn und Umgebung</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Decision section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Was suchst du?</h2>
+      <p class="section-sub">Dein Einstieg in die Szene – wähle, was zu dir passt</p>
+      <div class="decision-grid">
+        <a href="/events" class="decision-card decision-ausgehen">
+          <div class="decision-content">
+            <h3>Ich will tanzen gehen</h3>
+            <p>Partys, Social Dances & Events in deiner Nähe</p>
+            <span class="decision-arrow">Zu den Events &rarr;</span>
+          </div>
+        </a>
+        <a href="/kurse" class="decision-card decision-lernen">
+          <div class="decision-content">
+            <h3>Ich will tanzen lernen</h3>
+            <p>Kurse, Workshops & Bootcamps für alle Level</p>
+            <span class="decision-arrow">Zu den Kursen &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Preview -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Nächste Events</h2>
+      <p class="section-sub">Partys & Socials in Paderborn und Umgebung</p>
+      {events.length > 0 ? (
+        <div class="event-list">
+          {events.map((event: any) => (
+            <a href={`/events/${event.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{formatDate(event.date)}</span>
+                  <span class="event-time">{formatTime(event.date)} Uhr</span>
+                </div>
+                <div class="event-info">
+                  {event.category && (
+                    <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#7E7C8C'}; color: ${event.category === 'Festival' ? '#FFFFFF' : (event.category === 'Party' ? '#2D2B3A' : '#FFFFFF')}`}>{event.category}</span>
+                  )}
+                  <h3>{event.title}</h3>
+                  <p class="event-location">
+                    {event.location}{event.city ? `, ${event.city}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Aktuell keine Events geplant.</p>
+      )}
+      <a href="/events" class="see-all">Alle Events anzeigen &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Kurse Preview -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Aktuelle Kurse</h2>
+      <p class="section-sub">Finde den richtigen Einstieg</p>
+      {courses.length > 0 ? (
+        <div class="event-list">
+          {courses.map((kurs: any) => (
+            <a href={`/kurse/${kurs.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{kurs.schedule ?? ''}</span>
+                </div>
+                <div class="event-info">
+                  {kurs.level && (
+                    <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#7E7C8C'}`}>{kurs.level}</span>
+                  )}
+                  <h3>{kurs.title}</h3>
+                  <p class="event-location">
+                    {kurs.location}{kurs.teacher?.name ? ` · ${kurs.teacher.name}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Aktuell keine Kurse geplant.</p>
+      )}
+      <a href="/kurse" class="see-all">Alle Kurse & Workshops &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Community Teaser -->
+  <section class="section section-alt">
+    <div class="container community-teaser">
+      <h2 class="section-title">Die Szene in Paderborn</h2>
+      <p class="community-text">
+        {totalTeachers > 0 || totalSchools > 0
+          ? `${totalTeachers} Tanzlehrer:in${totalTeachers !== 1 ? 'nen' : ''} und ${totalSchools} Tanzschule${totalSchools !== 1 ? 'n' : ''} in Paderborn. Lerne die Szene kennen.`
+          : 'Eine wachsende Community aus Tanzlehrer:innen und Tanzschulen in Paderborn. Lerne die Szene kennen.'
+        }
+      </p>
+      <a href="/szene" class="btn btn-secondary">Die Szene entdecken</a>
+    </div>
+  </section>
+
+
+</BaseLayout>
+
+<style>
+  /* ====== Ciudad Fresca – Token Overrides ====== */
+  :root {
+    --color-primary: #6C3FC5;
+    --color-primary-dark: #5630A0;
+    --color-secondary-gold: #39B54A;
+    --color-secondary-terracotta: #FF8A65;
+    --color-neutral-dark: #2D2B3A;
+    --color-neutral-light: #F8F7FC;
+    --color-white: #FFFFFF;
+    --color-text-secondary: #5C5A6A;
+    --color-text-muted: #7E7C8C;
+    --shadow-card: 0 2px 8px rgba(45, 43, 58, 0.06);
+    --shadow-card-hover: 0 8px 24px rgba(108, 63, 197, 0.12);
+    --gradient-hero: linear-gradient(135deg, #6C3FC5 0%, #9B6DDB 40%, #FF8A65 100%);
+    --gradient-dark: linear-gradient(180deg, #2D2B3A, #3D3B4E);
+
+    /* Ciudad Fresca uses larger radii + pill buttons */
+    --radius-sm: 24px;
+    --radius-md: 16px;
+  }
+
+  /* Override button border-radius globally for pill shape */
+  :global(.btn) {
+    border-radius: 24px;
+  }
+
+  :global(.btn-secondary) {
+    color: #6C3FC5;
+    border-color: #6C3FC5;
+  }
+
+  :global(.btn-secondary:hover) {
+    background: #6C3FC5;
+    color: #FFFFFF;
+  }
+
+  /* Override focus ring to peach */
+  :global(:focus-visible) {
+    outline-color: #FF8A65;
+  }
+
+  /* ====== Hero ====== */
+  .hero {
+    background: var(--gradient-hero);
+    color: var(--color-white);
+    padding: var(--space-2xl) var(--space-md);
+    text-align: center;
+  }
+
+  .hero-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero-headline {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: var(--color-white);
+  }
+
+  .hero-highlight {
+    display: inline;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    margin-bottom: var(--space-xl);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding: var(--space-3xl) var(--space-md);
+    }
+    .hero-headline {
+      font-size: 3.5rem;
+    }
+    .hero-sub {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* ====== Counter Section ====== */
+  .counter-section {
+    background: var(--color-white);
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid rgba(45, 43, 58, 0.06);
+  }
+
+  .counter-grid {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+
+  .counter-item {
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .counter-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .counter-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-xs);
+    font-weight: 600;
+  }
+
+  .counter-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #7E7C8C;
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 1024px) {
+    .counter-number {
+      font-size: 3.5rem;
+    }
+    .counter-section {
+      padding: var(--space-2xl) 0;
+    }
+  }
+
+  /* ====== Decision Section ====== */
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .decision-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+  }
+
+  .decision-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-neutral-dark);
+    border-radius: 16px;
+    padding: var(--space-xl) var(--space-lg);
+    transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+
+  .decision-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .decision-ausgehen {
+    background: linear-gradient(135deg, rgba(108, 63, 197, 0.08), rgba(108, 63, 197, 0.04));
+    border-color: rgba(108, 63, 197, 0.15);
+  }
+
+  .decision-ausgehen:hover {
+    border-color: var(--color-primary);
+  }
+
+  .decision-lernen {
+    background: linear-gradient(135deg, rgba(255, 138, 101, 0.08), rgba(255, 138, 101, 0.04));
+    border-color: rgba(255, 138, 101, 0.15);
+  }
+
+  .decision-lernen:hover {
+    border-color: var(--color-secondary-terracotta);
+  }
+
+  .decision-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .decision-content p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }
+
+  .decision-arrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ====== Section Alt Background ====== */
+  .section-alt {
+    background: #EEEAF5;
+  }
+
+  /* ====== Event Cards ====== */
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .event-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .event-card {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center;
+    background: var(--color-white);
+    border-radius: 16px;
+    padding: var(--space-md) var(--space-lg);
+    box-shadow: 0 2px 8px rgba(45, 43, 58, 0.06);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
+  }
+
+  .section-alt .event-card {
+    background: var(--color-white);
+  }
+
+  .event-card:hover {
+    box-shadow: 0 8px 24px rgba(108, 63, 197, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .event-date {
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .event-day {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-neutral-dark);
+  }
+
+  .event-time {
+    display: block;
+    font-size: 0.8rem;
+    color: #7E7C8C;
+  }
+
+  .event-info {
+    flex: 1;
+  }
+
+  .event-tag {
+    display: inline-block;
+    color: var(--color-white);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px var(--space-sm);
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .event-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .event-location {
+    font-size: 0.85rem;
+    color: #7E7C8C;
+  }
+
+  /* ====== Community Teaser ====== */
+  .community-teaser {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .community-text {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  /* ====== Mobile ====== */
+  @media (max-width: 640px) {
+    .hero-headline {
+      font-size: 2rem;
+    }
+    .hero {
+      padding: var(--space-2xl) var(--space-md);
+    }
+    .event-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .event-date {
+      text-align: left;
+    }
+  }
+</style>

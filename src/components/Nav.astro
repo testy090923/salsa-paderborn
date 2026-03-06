@@ -13,10 +13,10 @@ const links = [
 <nav class="nav" aria-label="Hauptnavigation">
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Salsa Paderborn – Startseite">
-      <svg class="nav-logo-svg" viewBox="0 0 240 44" width="200" height="37" role="img" aria-hidden="true">
-        <text x="0" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="30" fill="#C62828" letter-spacing="-0.5">Salsa</text>
-        <text x="108" y="28" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="22" fill="#FFFFFF" letter-spacing="-0.3">Paderborn</text>
-        <rect x="0" y="34" width="42" height="3" rx="1.5" fill="#F5A623" opacity="0.85"/>
+      <svg class="nav-logo-svg" viewBox="0 0 270 36" width="220" height="34" role="img" aria-hidden="true">
+        <text x="0" y="26" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="26" class="logo-salsa">Salsa</text>
+        <text x="79" y="26" font-family="Sansita, 'Arial Black', Impact, sans-serif" font-weight="700" font-size="26" class="logo-paderborn">Paderborn</text>
+        <rect x="0" y="31" width="40" height="3" rx="1.5" class="logo-accent"/>
       </svg>
     </a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" aria-hidden="true" />
@@ -71,6 +71,19 @@ const links = [
     display: block;
     height: 34px;
     width: auto;
+  }
+
+  .logo-salsa {
+    fill: var(--color-primary, #C62828);
+  }
+
+  .logo-paderborn {
+    fill: #FFFFFF;
+  }
+
+  .logo-accent {
+    fill: var(--color-secondary-gold, #F5A623);
+    opacity: 0.85;
   }
 
   .nav-links {

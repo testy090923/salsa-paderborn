@@ -1,0 +1,521 @@
+---
+// Variante 4: "Son Cubano" – Terracotta & Sage Green, warm, authentic
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VariantSwitcher from '../components/VariantSwitcher.astro';
+import { sanityClient } from '../lib/sanity';
+import { homepageQuery } from '../lib/queries';
+
+const data = await sanityClient.fetch(homepageQuery);
+const events = data?.events ?? [];
+const courses = data?.courses ?? [];
+const totalEvents = data?.totalEvents ?? 0;
+const totalCourses = data?.totalCourses ?? 0;
+const totalTeachers = data?.totalTeachers ?? 0;
+const totalSchools = data?.totalSchools ?? 0;
+
+// Category color coding for events (variant 4 colors)
+const categoryColors: Record<string, string> = {
+  Party: '#5D8A66',
+  Social: '#C25B36',
+  Festival: '#D4A529',
+  Sonstiges: '#8A7A6E',
+};
+
+// Level color coding for courses
+const levelColors: Record<string, string> = {
+  'Anfänger': '#5D8A66',
+  'Mittelstufe': '#D4A529',
+  'Fortgeschritten': '#C25B36',
+  'Alle': '#1565C0',
+};
+
+// Format date in German locale
+function formatDate(isoDate: string): string {
+  const d = new Date(isoDate);
+  return d.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+function formatTime(isoDate: string): string {
+  const d = new Date(isoDate);
+  return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+}
+---
+
+<BaseLayout
+  title="Variante 4: Son Cubano – Salsa Paderborn"
+  description="Design-Variante 4: Son Cubano – Terracotta & Sage Green, warm, authentisch"
+>
+  <VariantSwitcher current={4} />
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-inner">
+      <h1 class="hero-headline">Salsa in Paderborn?<br /><span class="hero-highlight">Oh ja.</span></h1>
+      <p class="hero-sub">Dein Community-Portal für Salsa, Bachata & Kizomba in Paderborn und Umgebung.</p>
+    </div>
+  </section>
+
+  <!-- Diese Woche Counter -->
+  {(totalEvents > 0 || totalCourses > 0) && (
+    <section class="counter-section">
+      <div class="container">
+        <div class="counter-grid">
+          <div class="counter-item">
+            <span class="counter-number">{totalEvents}</span>
+            <span class="counter-label">{totalEvents === 1 ? 'Event' : 'Events'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalCourses}</span>
+            <span class="counter-label">{totalCourses === 1 ? 'Kurs' : 'Kurse'}</span>
+          </div>
+          <div class="counter-item">
+            <span class="counter-number">{totalTeachers + totalSchools}</span>
+            <span class="counter-label">Szene</span>
+          </div>
+        </div>
+        <p class="counter-note">In Paderborn und Umgebung</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Decision section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Was suchst du?</h2>
+      <p class="section-sub">Dein Einstieg in die Szene – wähle, was zu dir passt</p>
+      <div class="decision-grid">
+        <a href="/events" class="decision-card decision-ausgehen">
+          <div class="decision-content">
+            <h3>Ich will tanzen gehen</h3>
+            <p>Partys, Social Dances & Events in deiner Nähe</p>
+            <span class="decision-arrow">Zu den Events &rarr;</span>
+          </div>
+        </a>
+        <a href="/kurse" class="decision-card decision-lernen">
+          <div class="decision-content">
+            <h3>Ich will tanzen lernen</h3>
+            <p>Kurse, Workshops & Bootcamps für alle Level</p>
+            <span class="decision-arrow">Zu den Kursen &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Preview -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Nächste Events</h2>
+      <p class="section-sub">Partys & Socials in Paderborn und Umgebung</p>
+      {events.length > 0 ? (
+        <div class="event-list">
+          {events.map((event: any) => (
+            <a href={`/events/${event.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{formatDate(event.date)}</span>
+                  <span class="event-time">{formatTime(event.date)} Uhr</span>
+                </div>
+                <div class="event-info">
+                  {event.category && (
+                    <span class="event-tag" style={`background: ${categoryColors[event.category] ?? '#8A7A6E'}; color: ${event.category === 'Festival' ? '#2C1E14' : '#FFFDF8'}`}>{event.category}</span>
+                  )}
+                  <h3>{event.title}</h3>
+                  <p class="event-location">
+                    {event.location}{event.city ? `, ${event.city}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Aktuell keine Events geplant.</p>
+      )}
+      <a href="/events" class="see-all">Alle Events anzeigen &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Kurse Preview -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Aktuelle Kurse</h2>
+      <p class="section-sub">Finde den richtigen Einstieg</p>
+      {courses.length > 0 ? (
+        <div class="event-list">
+          {courses.map((kurs: any) => (
+            <a href={`/kurse/${kurs.slug?.current}`} class="event-card-link">
+              <article class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{kurs.schedule ?? ''}</span>
+                </div>
+                <div class="event-info">
+                  {kurs.level && (
+                    <span class="event-tag" style={`background: ${levelColors[kurs.level] ?? '#8A7A6E'}`}>{kurs.level}</span>
+                  )}
+                  <h3>{kurs.title}</h3>
+                  <p class="event-location">
+                    {kurs.location}{kurs.teacher?.name ? ` · ${kurs.teacher.name}` : ''}
+                  </p>
+                </div>
+              </article>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">Aktuell keine Kurse geplant.</p>
+      )}
+      <a href="/kurse" class="see-all">Alle Kurse & Workshops &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Community Teaser -->
+  <section class="section section-alt">
+    <div class="container community-teaser">
+      <h2 class="section-title">Die Szene in Paderborn</h2>
+      <p class="community-text">
+        {totalTeachers > 0 || totalSchools > 0
+          ? `${totalTeachers} Tanzlehrer:in${totalTeachers !== 1 ? 'nen' : ''} und ${totalSchools} Tanzschule${totalSchools !== 1 ? 'n' : ''} in Paderborn. Lerne die Szene kennen.`
+          : 'Eine wachsende Community aus Tanzlehrer:innen und Tanzschulen in Paderborn. Lerne die Szene kennen.'
+        }
+      </p>
+      <a href="/szene" class="btn btn-secondary">Die Szene entdecken</a>
+    </div>
+  </section>
+
+
+</BaseLayout>
+
+<style>
+  /* ====== Son Cubano – Token Overrides ====== */
+  :root {
+    --color-primary: #C25B36;
+    --color-primary-dark: #9A4628;
+    --color-secondary-gold: #D4A529;
+    --color-secondary-terracotta: #5D8A66;
+    --color-neutral-dark: #2C1E14;
+    --color-neutral-light: #FDF8F0;
+    --color-white: #FFFDF8;
+    --color-text-secondary: #5C4A3E;
+    --color-text-muted: #8A7A6E;
+    --shadow-card: 0 2px 8px rgba(44, 30, 20, 0.06);
+    --shadow-card-hover: 0 8px 24px rgba(44, 30, 20, 0.10);
+    --gradient-hero: linear-gradient(150deg, #C25B36 0%, #D4A529 60%, #5D8A66 100%);
+    --gradient-dark: linear-gradient(180deg, #2C1E14, #3D2E22);
+
+    /* Son Cubano uses smaller radii for a rawer, handcrafted feel */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+  }
+
+  /* Override focus ring to mustard */
+  :global(:focus-visible) {
+    outline-color: #D4A529;
+  }
+
+  /* Override button styles for Son Cubano */
+  :global(.btn-secondary) {
+    color: #5D8A66;
+    border-color: #5D8A66;
+    border-radius: 6px;
+  }
+
+  :global(.btn-secondary:hover) {
+    background: #5D8A66;
+    color: #FFFDF8;
+  }
+
+  /* ====== Hero ====== */
+  .hero {
+    background: var(--gradient-hero);
+    color: #FFFDF8;
+    padding: var(--space-2xl) var(--space-md);
+    text-align: center;
+  }
+
+  .hero-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .hero-headline {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: #FFFDF8;
+  }
+
+  .hero-highlight {
+    display: inline;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    margin-bottom: var(--space-xl);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      padding: var(--space-3xl) var(--space-md);
+    }
+    .hero-headline {
+      font-size: 3.5rem;
+    }
+    .hero-sub {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* ====== Counter Section ====== */
+  .counter-section {
+    background: #FFFDF8;
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid rgba(44, 30, 20, 0.06);
+  }
+
+  .counter-grid {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+
+  .counter-item {
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .counter-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .counter-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-xs);
+    font-weight: 600;
+  }
+
+  .counter-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #8A7A6E;
+    margin-top: var(--space-md);
+  }
+
+  @media (min-width: 1024px) {
+    .counter-number {
+      font-size: 3.5rem;
+    }
+    .counter-section {
+      padding: var(--space-2xl) 0;
+    }
+  }
+
+  /* ====== Decision Section ====== */
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .decision-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+  }
+
+  .decision-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-neutral-dark);
+    border-radius: 8px;
+    padding: var(--space-xl) var(--space-lg);
+    transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+
+  .decision-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .decision-ausgehen {
+    background: linear-gradient(135deg, rgba(194, 91, 54, 0.08), rgba(194, 91, 54, 0.04));
+    border-color: rgba(194, 91, 54, 0.15);
+  }
+
+  .decision-ausgehen:hover {
+    border-color: var(--color-primary);
+  }
+
+  .decision-lernen {
+    background: linear-gradient(135deg, rgba(93, 138, 102, 0.08), rgba(93, 138, 102, 0.04));
+    border-color: rgba(93, 138, 102, 0.15);
+  }
+
+  .decision-lernen:hover {
+    border-color: var(--color-secondary-terracotta);
+  }
+
+  .decision-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .decision-content p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }
+
+  .decision-arrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ====== Section Alt Background ====== */
+  .section-alt {
+    background: #F5E6DC;
+  }
+
+  /* ====== Section Title decorative underline (Son Cubano accent) ====== */
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #D4A529;
+    margin: 8px auto 0;
+    border-radius: 2px;
+  }
+
+  /* ====== Event Cards ====== */
+  .event-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .event-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .event-card {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center;
+    background: #FFFDF8;
+    border-radius: 8px;
+    padding: var(--space-md) var(--space-lg);
+    border: 1px solid rgba(194, 91, 54, 0.08);
+    box-shadow: 0 2px 8px rgba(44, 30, 20, 0.06);
+    transition: box-shadow 200ms ease-in-out, transform 200ms ease-in-out;
+  }
+
+  .section-alt .event-card {
+    background: #FFFDF8;
+  }
+
+  .event-card:hover {
+    box-shadow: 0 8px 24px rgba(44, 30, 20, 0.10);
+    transform: translateY(-2px);
+  }
+
+  .event-date {
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .event-day {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-neutral-dark);
+  }
+
+  .event-time {
+    display: block;
+    font-size: 0.8rem;
+    color: #8A7A6E;
+  }
+
+  .event-info {
+    flex: 1;
+  }
+
+  .event-tag {
+    display: inline-block;
+    color: #FFFDF8;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px var(--space-sm);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+  }
+
+  .event-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .event-location {
+    font-size: 0.85rem;
+    color: #8A7A6E;
+  }
+
+  /* ====== Community Teaser ====== */
+  .community-teaser {
+    text-align: center;
+    max-width: 600px;
+  }
+
+  .community-text {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  /* ====== Mobile ====== */
+  @media (max-width: 640px) {
+    .hero-headline {
+      font-size: 2rem;
+    }
+    .hero {
+      padding: var(--space-2xl) var(--space-md);
+    }
+    .event-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+    .event-date {
+      text-align: left;
+    }
+  }
+</style>

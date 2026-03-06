@@ -1,0 +1,152 @@
+---
+interface Props {
+  current: number;
+}
+
+const { current } = Astro.props;
+
+const variants = [
+  { num: 1, name: 'Noche Tropical', colors: ['#E8634A', '#0D8A8A'], href: '/variante1' },
+  { num: 2, name: 'Havana Nights', colors: ['#A8135A', '#E8A838'], href: '/variante2' },
+  { num: 3, name: 'Ciudad Fresca', colors: ['#6C3FC5', '#39B54A'], href: '/variante3' },
+  { num: 4, name: 'Son Cubano', colors: ['#C25B36', '#5D8A66'], href: '/variante4' },
+];
+---
+
+<div class="vs-bar">
+  <div class="vs-inner">
+    <span class="vs-label">Design-Varianten für Nadia:</span>
+    <div class="vs-options">
+      {variants.map((v) => (
+        <a
+          href={v.href}
+          class:list={['vs-option', { 'vs-active': v.num === current }]}
+          aria-current={v.num === current ? 'page' : undefined}
+        >
+          <span class="vs-dots">
+            <span class="vs-dot" style={`background: ${v.colors[0]}`}></span>
+            <span class="vs-dot" style={`background: ${v.colors[1]}`}></span>
+          </span>
+          <span class="vs-name">{v.name}</span>
+        </a>
+      ))}
+    </div>
+    <a href="/" class="vs-current">Aktuelle Version</a>
+  </div>
+</div>
+
+<style>
+  .vs-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: #1a1a2e;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .vs-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .vs-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .vs-options {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+  .vs-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 150ms ease, border-color 150ms ease;
+  }
+
+  .vs-option:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+
+  .vs-option.vs-active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+  }
+
+  .vs-dots {
+    display: flex;
+    gap: 3px;
+  }
+
+  .vs-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .vs-name {
+    display: inline;
+  }
+
+  .vs-current {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  .vs-current:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .vs-label {
+      display: none;
+    }
+
+    .vs-name {
+      display: none;
+    }
+
+    .vs-option {
+      padding: 8px 10px;
+    }
+
+    .vs-dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .vs-current {
+      font-size: 0.8rem;
+    }
+  }
+</style>
