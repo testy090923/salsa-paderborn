@@ -67,25 +67,21 @@ const teacherJsonLd = {
   <script type="application/ld+json" set:html={JSON.stringify(teacherJsonLd)} slot="head" />
   <div class="page-header">
     <h1>{teacher.name}</h1>
-    <p>
-      Tanzlehrer:in
-      {teacher.styles?.length > 0 && ` · ${teacher.styles.join(', ')}`}
-      {teacher.school?.name && ` · ${teacher.school.name}`}
-    </p>
+    <p>{teacher.styles?.length > 0 ? teacher.styles.join(' & ') : 'Tanzlehrer:in'}</p>
   </div>
 
   <section class="section">
     <div class="container">
-      <a href="/lehrer" class="back-link">&larr; Alle Lehrer:innen</a>
+      <a href="/szene" class="back-link">&larr; Zurück zur Szene</a>
 
-      <div class="profile">
-        <div class="profile-avatar-wrapper">
+      <article class="profile">
+        <!-- Profile photo -->
+        <div class="profile-hero">
           {teacher.photo ? (
             <SanityImage
               source={teacher.photo}
               alt={teacher.name}
-              width={120}
-              height={120}
+              width={600}
               class="profile-photo"
             />
           ) : (
@@ -93,95 +89,95 @@ const teacherJsonLd = {
           )}
         </div>
 
-        <div class="profile-content">
-          <div class="profile-meta">
-            {teacher.school?.name && (
-              <span class="meta-tag">
-                {teacher.school.slug?.current ? (
-                  <a href={`/tanzschulen/${teacher.school.slug.current}`}>{teacher.school.name}</a>
-                ) : (
-                  teacher.school.name
-                )}
-              </span>
-            )}
-            {teacher.styles?.map((style: string) => (
-              <span class="meta-tag">{style}</span>
-            ))}
-          </div>
-
-          {teacher.bio && (
-            <div class="bio-section">
-              <h2>Über {teacher.name}</h2>
-              <div class="bio-text">
-                <PortableText value={teacher.bio} />
-              </div>
-            </div>
+        <!-- Name + Styles subtitle -->
+        <div class="profile-intro">
+          <h2 class="profile-name">{teacher.name}</h2>
+          {teacher.styles?.length > 0 && (
+            <p class="profile-styles">{teacher.styles.join(' · ')}</p>
           )}
-
-          {teacher.courses && teacher.courses.length > 0 && (
-            <div class="courses-section">
-              <h2>Aktuelle Kurse</h2>
-              <div class="kurse-list">
-                {teacher.courses.map((course: any) => (
-                  <a
-                    href={course.slug?.current ? `/kurse/${course.slug.current}` : '#'}
-                    class="kurs-item-link"
-                  >
-                    <div class="kurs-item">
-                      <div class="kurs-item-header">
-                        <h3>{course.title}</h3>
-                        {course.level && (
-                          <span
-                            class="kurs-level"
-                            style={`background: ${levelColors[course.level] ?? '#666'}`}
-                          >
-                            {course.level}
-                          </span>
-                        )}
-                      </div>
-                      <p class="kurs-item-meta">
-                        {course.schedule && <span>{course.schedule}</span>}
-                        {course.location && <span> · {course.location}</span>}
-                      </p>
-                      {course.style && (
-                        <span class="kurs-style">{course.style}</span>
-                      )}
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {(teacher.contact || teacher.website) && (
-            <div class="contact-section">
-              <h2>Kontakt</h2>
-              <div class="contact-links">
-                {teacher.contact?.email && (
-                  <a href={`mailto:${teacher.contact.email}`} class="contact-link">
-                    {teacher.contact.email}
-                  </a>
-                )}
-                {teacher.website && (
-                  <a href={teacher.website} target="_blank" rel="noopener noreferrer" class="contact-link">
-                    Website besuchen &rarr;
-                  </a>
-                )}
-                {teacher.contact?.instagram && (
-                  <a
-                    href={`https://instagram.com/${teacher.contact.instagram.replace('@', '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="contact-link"
-                  >
-                    @{teacher.contact.instagram.replace('@', '')} auf Instagram
-                  </a>
-                )}
-              </div>
-            </div>
+          {teacher.school?.name && (
+            <p class="profile-school">
+              {teacher.school.slug?.current ? (
+                <a href={`/tanzschulen/${teacher.school.slug.current}`}>{teacher.school.name}</a>
+              ) : (
+                teacher.school.name
+              )}
+            </p>
           )}
         </div>
-      </div>
+
+        <!-- Bio -->
+        {teacher.bio && (
+          <div class="profile-bio">
+            <PortableText value={teacher.bio} />
+          </div>
+        )}
+
+        <!-- Courses -->
+        {teacher.courses && teacher.courses.length > 0 && (
+          <div class="profile-section">
+            <h3 class="profile-section-title">Aktuelle Kurse</h3>
+            <div class="kurse-list">
+              {teacher.courses.map((course: any) => (
+                <a
+                  href={course.slug?.current ? `/kurse/${course.slug.current}` : '#'}
+                  class="kurs-item-link"
+                >
+                  <div class="kurs-item">
+                    <div class="kurs-item-header">
+                      <h4>{course.title}</h4>
+                      {course.level && (
+                        <span
+                          class="kurs-level"
+                          style={`background: ${levelColors[course.level] ?? '#666'}`}
+                        >
+                          {course.level}
+                        </span>
+                      )}
+                    </div>
+                    <p class="kurs-item-meta">
+                      {course.schedule && <span>{course.schedule}</span>}
+                      {course.location && <span> · {course.location}</span>}
+                    </p>
+                    {course.style && (
+                      <span class="kurs-style">{course.style}</span>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Contact -->
+        {(teacher.contact || teacher.website) && (
+          <div class="profile-section">
+            <h3 class="profile-section-title">Kontakt</h3>
+            <div class="contact-links">
+              {teacher.contact?.email && (
+                <a href={`mailto:${teacher.contact.email}`} class="contact-link">
+                  {teacher.contact.email}
+                </a>
+              )}
+              {teacher.website && (
+                <a href={teacher.website} target="_blank" rel="noopener noreferrer" class="contact-link">
+                  Website besuchen &rarr;
+                </a>
+              )}
+              {teacher.contact?.instagram && (
+                <a
+                  href={`https://instagram.com/${teacher.contact.instagram.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-link"
+                >
+                  @{teacher.contact.instagram.replace('@', '')} auf Instagram
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </article>
     </div>
   </section>
 </BaseLayout>
@@ -199,90 +195,117 @@ const teacherJsonLd = {
     text-decoration: underline;
   }
 
+  /* ====== Single-column portrait layout ====== */
   .profile {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .profile-hero {
     display: flex;
-    gap: 2rem;
-    align-items: flex-start;
+    justify-content: center;
+    margin-bottom: 2rem;
   }
 
-  .profile-avatar-wrapper {
-    flex-shrink: 0;
-  }
-
-  .profile-avatar-wrapper :global(.profile-photo) {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
+  .profile-hero :global(.profile-photo) {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
   .profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
     background: var(--gradient-hero);
     color: white;
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .profile-content {
-    flex: 1;
+  /* ====== Intro block ====== */
+  .profile-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
   }
 
-  .profile-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1.5rem;
-  }
-  .meta-tag {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    background: rgba(198, 40, 40, 0.08);
-    color: var(--color-primary);
-  }
-  .meta-tag a {
-    color: inherit;
-    text-decoration: none;
-  }
-  .meta-tag a:hover {
-    text-decoration: underline;
-  }
-
-  .bio-section,
-  .courses-section,
-  .contact-section {
-    margin-bottom: 1.5rem;
-  }
-
-  .profile-content h2 {
+  .profile-name {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
   }
 
-  .bio-text {
+  .profile-styles {
+    font-size: 1.15rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  .profile-school {
     font-size: 0.95rem;
-    color: #555;
-    line-height: 1.6;
+    color: var(--color-text-muted, #666);
+    margin: 0;
   }
-  .bio-text :global(p) {
-    margin-bottom: 0.75rem;
-  }
-  .bio-text :global(a) {
+
+  .profile-school a {
     color: var(--color-primary);
     text-decoration: none;
     font-weight: 600;
   }
-  .bio-text :global(a:hover) {
+  .profile-school a:hover {
     text-decoration: underline;
+  }
+
+  /* ====== Bio ====== */
+  .profile-bio {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+  .profile-bio :global(p) {
+    margin-bottom: 1rem;
+  }
+  .profile-bio :global(a) {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .profile-bio :global(a:hover) {
+    text-decoration: underline;
+  }
+  .profile-bio :global(strong) {
+    font-weight: 600;
+  }
+  .profile-bio :global(ul),
+  .profile-bio :global(ol) {
+    margin-left: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ====== Section blocks (Kurse, Kontakt) ====== */
+  .profile-section {
+    margin-bottom: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+  }
+
+  .profile-section-title {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
   }
 
   .kurse-list {
@@ -298,7 +321,7 @@ const teacherJsonLd = {
   }
 
   .kurs-item {
-    background: #faf9f7;
+    background: var(--color-neutral-light, #faf9f7);
     border-radius: 8px;
     padding: 1rem;
     border-left: 3px solid var(--color-primary);
@@ -315,7 +338,7 @@ const teacherJsonLd = {
     margin-bottom: 0.15rem;
   }
 
-  .kurs-item h3 {
+  .kurs-item h4 {
     font-size: 1rem;
     margin: 0;
   }
@@ -354,7 +377,7 @@ const teacherJsonLd = {
 
   .contact-link {
     display: inline-block;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--color-primary);
     text-decoration: none;
@@ -364,19 +387,11 @@ const teacherJsonLd = {
   }
 
   @media (max-width: 600px) {
-    .profile {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    .profile-name {
+      font-size: 1.6rem;
     }
-    .profile-meta {
-      justify-content: center;
-    }
-    .kurs-item {
-      text-align: left;
-    }
-    .contact-links {
-      align-items: center;
+    .profile-styles {
+      font-size: 1rem;
     }
   }
 </style>
