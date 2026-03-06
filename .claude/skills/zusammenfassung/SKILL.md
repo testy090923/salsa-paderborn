@@ -1,6 +1,7 @@
 ---
 name: zusammenfassung
 description: Generiert eine strukturierte Meeting-Zusammenfassung mit Briefing, offenen Fragen und nächsten Schritten
+model: sonnet
 ---
 
 # Meeting-Zusammenfassung generieren

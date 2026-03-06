@@ -23,9 +23,12 @@
 - [x] Demo-Content per Seed-Script eingespielt
 - [x] Impressum + Datenschutz – Platzhalter-Seiten erstellt, warten auf Nadias Daten
 - [x] SEO-Basics (OG Meta Tags, Sitemap, robots.txt, Favicon)
-- [ ] SEO-Advanced (Schema.org JSON-LD) – in Arbeit
+- [x] SEO-Advanced (Schema.org JSON-LD) – auf allen Seitentypen
 - [x] Brand Guide (Farben, Typo, Logo) – Draft, wartet auf Feedback
-- [ ] Logo SVG-Wordmark – in Arbeit
+- [x] Logo SVG-Wordmark (inline SVG, CSS Custom Properties)
+- [x] 4 Design-Varianten erstellt (/variante1-4) mit sticky Switcher
+- [x] Lehrer-Profilseite redesigned (Portrait-Layout)
+- [x] Stack-Guide + Team-Overview Docs (knowledge/)
 - [x] QA + Feinschliff (Accessibility, Mobile, Performance) – 15 Fixes umgesetzt
 - [ ] Fotogalerie (Phase 2)
 - [ ] Locations als Content-Typ (Phase 2)
@@ -37,9 +40,10 @@
 - [x] QA-Report erstellt (progress/qa-report.md)
 
 ## Offene Blocker (brauchen Nadia)
+- **Farb-Variante wählen:** 4 Varianten live unter /variante1-4 – Nadia muss Bauchgefühl geben
+- **Lehrer-Profil:** Nadia soll neues Portrait-Layout prüfen (inspiriert von tanzbau.de)
 - **Impressum:** Nadia muss Adressfrage klären (virtuelle Geschäftsadresse)
 - **Fotos:** Kein Bildmaterial vorhanden – Nadia muss beim nächsten Event fotografieren lassen
-- **Brand-Feedback:** Nadia muss Brand Guide reviewen
 - **Echter Content:** Reale Events, Kurse, Lehrer eintragen (Sanity-Anleitung liegt bereit)
 
 ## Technische Details (für nächste Session)
@@ -133,3 +137,23 @@ sanity.cli.ts            – CLI-Config (Root)
 - Netlify Deployment erfolgreich – Website ist LIVE
 - Sanity Studio funktioniert online (CORS mit Credentials)
 - Nadia als Editor in Sanity eingeladen
+
+### 2026-03-06 – Session 5: QA-Fixes, SEO, Design-Varianten, Profil-Redesign
+- QA-Fixes: 15 Issues behoben (Kontraste, Skip-Link, Focus-Styles, OG-Tags, Font-Preloads, Umlaute)
+- SEO: Schema.org JSON-LD auf allen Seitentypen (Event, Course, Person, DanceSchool, WebSite, Organization)
+- SEO-Basics: Sitemap-Integration, robots.txt, Favicon, 404-Seite
+- Impressum + Datenschutz Platzhalter-Seiten
+- SVG Wordmark Logo in Nav + Footer (inline, CSS Custom Properties für Varianten)
+- Scheduled Deploys: GitHub Actions Cron (2x täglich statt Webhook, spart Free-Plan-Minutes)
+- Sanity-Anleitung für Nadia geschrieben (client/sanity-anleitung.md)
+- Redundante Hero-CTAs entfernt (Decision Cards übernehmen die Funktion)
+- Hero-Padding reduziert
+- 4 Design-Varianten recherchiert + gebaut (/variante1-4):
+  - V1 "Noche Tropical" (Coral + Teal)
+  - V2 "Havana Nights" (Magenta, Dark Theme)
+  - V3 "Ciudad Fresca" (Violet + Lime, Pill-Buttons)
+  - V4 "Son Cubano" (Terracotta + Sage Green)
+- Sticky VariantSwitcher-Komponente mit Farbpunkt-Vorschau
+- Lehrer-Profilseite komplett redesigned: Portrait-Style (großes Foto, zentriert, einspaltzig) – inspiriert von tanzbau.de Referenz
+- Stack-Guide (knowledge/stack-guide.md) für neues Agent-Team geschrieben
+- Team-Overview (knowledge/team-overview.md) mit allen Agenten + Skills dokumentiert

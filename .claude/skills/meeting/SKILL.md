@@ -1,6 +1,7 @@
 ---
 name: meeting
 description: Meeting-Modus starten – aktiviert den Discovery Agent für Live-Begleitung eines Kundengesprächs
+model: sonnet
 ---
 
 # Meeting-Modus

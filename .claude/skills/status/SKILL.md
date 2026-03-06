@@ -1,6 +1,7 @@
 ---
 name: status
 description: Zeigt den aktuellen Build-Fortschritt auf einen Blick – was steht, was fehlt, was blockiert
+model: haiku
 ---
 
 # Build-Status

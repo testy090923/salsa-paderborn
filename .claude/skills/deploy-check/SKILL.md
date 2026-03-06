@@ -1,6 +1,7 @@
 ---
 name: deploy-check
 description: Prüft ob die Website deployment-ready ist – Build, Qualität, Rechtliches, Performance
+model: sonnet
 ---
 
 # Deploy-Check

@@ -50,21 +50,34 @@ salsa-web-agency/
 
 ## Agenten
 
-| Agent | Zustaendigkeit | Modus |
-|-------|---------------|-------|
-| **Discovery** | Begleitet Live-Kundengespraeche, formuliert niederschwellige Fragen, erfasst Anforderungen | delegiert + direkt |
-| **Brand Strategist** | Entwickelt Positionierung, Zielgruppe, Messaging, Farbwelt, Typografie, Tone of Voice | delegiert |
-| **Astro Builder** | Setzt alles technisch um: Komponenten, Layouts, Pages, Responsive, Netlify-Deployment | delegiert |
-| **Content Architect** | Plant Seitenstruktur, schreibt Texte, optimiert fuer SEO, entwickelt Bildkonzepte | delegiert |
-| **QA Reviewer** | Prueft Accessibility, Performance, Mobile, Cross-Browser, Lighthouse-Scores | delegiert |
+| Agent | Zustaendigkeit | Modell | maxTurns | Modus |
+|-------|---------------|--------|----------|-------|
+| **Discovery** | Begleitet Live-Kundengespraeche, formuliert niederschwellige Fragen, erfasst Anforderungen | sonnet | 30 | delegiert + direkt |
+| **Brand Strategist** | Entwickelt Positionierung, Zielgruppe, Messaging, Farbwelt, Typografie, Tone of Voice | sonnet | 20 | delegiert |
+| **Astro Builder** | Setzt alles technisch um: Komponenten, Layouts, Pages, Responsive, Netlify-Deployment | sonnet | 30 | delegiert |
+| **Content Architect** | Plant Seitenstruktur, schreibt Texte, optimiert fuer SEO, entwickelt Bildkonzepte | sonnet | 20 | delegiert |
+| **QA Reviewer** | Prueft Accessibility, Performance, Mobile, Cross-Browser, Lighthouse-Scores | sonnet | 20 | delegiert |
 
 **Direkt-Modus:** Der Discovery Agent kann als eigenstaendige Claude-Session gestartet werden (`scripts/discovery`) – fuer Live-Meeting-Begleitung mit dem Klienten. Der Agency Director empfiehlt das bei Bedarf und schreibt vorher ein Briefing unter `briefings/`.
 
 ## Skills
-- `/meeting` – Meeting-Modus starten, Discovery Agent für Live-Begleitung aktivieren
-- `/zusammenfassung` – Meeting-Zusammenfassung + offene Fragen + nächste Schritte generieren
-- `/status` – Aktueller Build-Fortschritt auf einen Blick
-- `/deploy-check` – Prüft ob die Site deployment-ready ist
+
+| Skill | Aufgabe | Modell |
+|-------|---------|--------|
+| `/meeting` | Meeting-Modus starten, Discovery Agent fuer Live-Begleitung aktivieren | sonnet |
+| `/zusammenfassung` | Meeting-Zusammenfassung + offene Fragen + naechste Schritte generieren | sonnet |
+| `/status` | Aktueller Build-Fortschritt auf einen Blick | haiku |
+| `/deploy-check` | Prueft ob die Site deployment-ready ist | sonnet |
+| `/audit-content` | Content auf KI-erkennbare Muster prüfen (GPTisms, Design-Tells) | sonnet |
+
+## Knowledge
+
+| Datei | Inhalt |
+|-------|--------|
+| `knowledge/astro-patterns.md` | Astro Best Practices |
+| `knowledge/stack-guide.md` | Stack-Referenz |
+| `knowledge/brand-references.md` | Brand-Recherche und Referenzen |
+| `knowledge/content-humanization.md` | Anti-GPTism & Anti-AI-Slop Regeln (Blacklists, Strukturregeln, Design-Tells) |
 
 ## Regeln
 1. **Dateien sind das Gedächtnis.** Alles Wichtige wird in den Dateien unter `client/`, `progress/` und `knowledge/` festgehalten. Was nur im Chat steht, ist nach der Session weg.
