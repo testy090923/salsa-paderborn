@@ -20,7 +20,7 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
   <section class="section">
     <div class="container">
       <h2 class="section-title">Häufige Fragen</h2>
-      <p class="section-sub">Die Antworten auf die wichtigsten Fragen rund ums Tanzen lernen</p>
+      <p class="section-sub">Damit du weißt, was dich erwartet</p>
       <div class="faq-list">
         <details class="faq-item">
           <summary class="faq-question">Brauche ich einen Tanzpartner?</summary>
@@ -46,19 +46,19 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
   <section class="section section-alt">
     <div class="container">
       <h2 class="section-title">Welcher Tanzstil passt zu dir?</h2>
-      <p class="section-sub">Jeder Stil hat seinen eigenen Charakter – probier aus, was dich anspricht</p>
+      <p class="section-sub">Probier einfach aus, was dich anspricht</p>
       <div class="style-grid">
         <div class="style-card">
           <h3>Salsa</h3>
-          <p>Der Klassiker – lebhaft, sozial, macht süchtig. Getanzt auf energiegeladene Musik mit afrokubanischen Wurzeln.</p>
+          <p>Lebhaft, sozial, macht süchtig. Punkt.</p>
         </div>
         <div class="style-card">
           <h3>Bachata</h3>
-          <p>Sinnlich, melodisch, perfekt für Einsteiger. Aus der Dominikanischen Republik in die ganze Welt.</p>
+          <p>Sinnlich und melodisch – aus der Dominikanischen Republik, mittlerweile überall. Guter Einstieg, wenn du noch nie getanzt hast.</p>
         </div>
         <div class="style-card">
           <h3>Kizomba</h3>
-          <p>Smooth, verbindend, voller Gefühl. Aus Angola und Kap Verde – der entspannteste Latin-Tanz.</p>
+          <p>Kennt hier noch nicht jeder. Kommt aus Angola und Kap Verde, wird langsam und eng getanzt, voller Ausdruck. Wer Kizomba einmal probiert hat, will meistens nicht mehr aufhören.</p>
         </div>
       </div>
     </div>
@@ -68,7 +68,7 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
   <section class="section">
     <div class="container">
       <h2 class="section-title">Aktuelle Kurse & Workshops</h2>
-      <p class="section-sub">Alle Angebote in Paderborn und Umgebung</p>
+      <p class="section-sub">Was gerade in Paderborn läuft</p>
       {courses.length > 0 ? (
         <div class="kurs-list">
           {courses.map((course: any) => (
@@ -140,7 +140,7 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
     padding: 0 var(--space-lg) var(--space-lg);
     font-size: 0.95rem;
     line-height: 1.7;
-    color: #555;
+    color: var(--color-text-secondary);
   }
 
   /* ====== Dance Style Cards ====== */
@@ -177,7 +177,7 @@ const courses = await sanityClient.fetch(allCoursesQuery) ?? [];
 
   .style-card p {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-text-muted);
     line-height: 1.5;
   }
 

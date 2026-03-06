@@ -105,7 +105,7 @@ function formatTime(isoDate: string): string {
   <section class="section">
     <div class="container">
       <h2 class="section-title">Was suchst du?</h2>
-      <p class="section-sub">Dein Einstieg in die Szene – wähle, was zu dir passt</p>
+      <p class="section-sub">Fang einfach an – egal wo</p>
       <div class="decision-grid">
         <a href="/events" class="decision-card decision-ausgehen">
           <div class="decision-content">
@@ -129,7 +129,7 @@ function formatTime(isoDate: string): string {
   <section class="section section-alt">
     <div class="container">
       <h2 class="section-title">Nächste Events</h2>
-      <p class="section-sub">Partys & Socials in Paderborn und Umgebung</p>
+      <p class="section-sub">Was diese Woche in Paderborn los ist</p>
       {events.length > 0 ? (
         <div class="event-list">
           {events.map((event: any) => (
@@ -293,7 +293,7 @@ function formatTime(isoDate: string): string {
   .counter-note {
     text-align: center;
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-muted);
     margin-top: var(--space-md);
   }
 
@@ -430,7 +430,7 @@ function formatTime(isoDate: string): string {
   .event-time {
     display: block;
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-muted);
   }
 
   .event-info {
@@ -458,7 +458,7 @@ function formatTime(isoDate: string): string {
 
   .event-location {
     font-size: 0.85rem;
-    color: #666;
+    color: var(--color-text-muted);
   }
 
   /* ====== Community Teaser ====== */

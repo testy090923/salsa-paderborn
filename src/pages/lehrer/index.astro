@@ -44,7 +44,7 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
 
   .empty-state {
     text-align: center;
-    color: #666;
+    color: var(--color-text-muted);
     font-size: 0.95rem;
     padding: 3rem 0;
   }
@@ -67,7 +67,7 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
     border-radius: 50%;
     flex-shrink: 0;
     background: var(--color-neutral-light);
-    color: #666;
+    color: var(--color-text-muted);
     font-family: var(--font-heading);
     font-size: 2rem;
     font-weight: 700;
@@ -79,7 +79,7 @@ const teachers = await sanityClient.fetch(allTeachersQuery) ?? [];
   .cta-content { flex: 1; }
   .cta-content h2 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 2px; }
   .cta-styles { font-size: 0.9rem; color: var(--color-secondary-terracotta); font-weight: 600; margin-bottom: 2px; }
-  .cta-bio { font-size: 0.95rem; color: #555; margin-bottom: var(--space-md); line-height: 1.5; }
+  .cta-bio { font-size: 0.95rem; color: var(--color-text-secondary); margin-bottom: var(--space-md); line-height: 1.5; }
   .cta-link { font-size: 0.9rem; font-weight: 600; color: var(--color-primary); text-decoration: none; }
   .cta-link:hover { text-decoration: underline; }
 

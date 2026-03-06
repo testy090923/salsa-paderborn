@@ -13,28 +13,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="contact-grid">
 
         <div class="contact-card">
-          <span class="contact-icon">💬</span>
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+          </svg>
           <h3>Allgemeine Fragen</h3>
           <p>Du hast eine Frage zu Events, Kursen oder der Plattform?</p>
           <p class="contact-detail"><a href="mailto:info@salsa-paderborn.de">info@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
-          <span class="contact-icon">🎤</span>
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M10 14h4"/><path d="M12 12v4"/>
+          </svg>
           <h3>Event eintragen</h3>
           <p>Du veranstaltest eine Party oder ein Festival in der Region?</p>
           <p class="contact-detail"><a href="mailto:events@salsa-paderborn.de">events@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
-          <span class="contact-icon">👩‍🏫</span>
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>
+          </svg>
           <h3>Als Lehrer:in mitmachen</h3>
           <p>Du unterrichtest und willst dich auf der Plattform präsentieren?</p>
           <p class="contact-detail"><a href="mailto:lehrer@salsa-paderborn.de">lehrer@salsa-paderborn.de</a></p>
         </div>
 
         <div class="contact-card">
-          <span class="contact-icon">🏠</span>
+          <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>
+          </svg>
           <h3>Tanzschule anmelden</h3>
           <p>Eure Schule oder euer Verein soll auf die Plattform?</p>
           <p class="contact-detail"><a href="mailto:partner@salsa-paderborn.de">partner@salsa-paderborn.de</a></p>
@@ -63,9 +71,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     transform: translateY(-2px);
   }
 
-  .contact-icon { font-size: 2rem; display: block; margin-bottom: var(--space-sm); }
+  .contact-icon { display: block; margin: 0 auto var(--space-sm); color: var(--color-primary); }
   .contact-card h3 { font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: var(--space-xs); }
-  .contact-card p { font-size: 0.85rem; color: #666; }
+  .contact-card p { font-size: 0.85rem; color: var(--color-text-muted); }
   .contact-detail {
     font-weight: 600; color: var(--color-primary); font-size: 0.9rem;
     margin-top: var(--space-sm);
