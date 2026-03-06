@@ -106,13 +106,13 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
          ========================================================================== */
 
       :root {
-        /* Colors – Primary */
-        --color-primary: #C62828;
-        --color-primary-dark: #A51E1E;
+        /* Colors – Primary (Havana Lights: Magenta on Light) */
+        --color-primary: #A8135A;
+        --color-primary-dark: #8A0F4A;
 
         /* Colors – Secondary */
-        --color-secondary-gold: #F5A623;
-        --color-secondary-terracotta: #E65100;
+        --color-secondary-gold: #E8A838;
+        --color-secondary-terracotta: #D94F9A;
 
         /* Colors – Neutral */
         --color-neutral-dark: #1A1A2E;
@@ -126,7 +126,7 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
         /* Colors – Functional */
         --color-success: #2E7D32;
         --color-warning: #F9A825;
-        --color-error: #C62828;
+        --color-error: #C62828; /* stays red for semantic clarity */
         --color-info: #1565C0;
 
         /* Typography */
@@ -152,7 +152,7 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
         --radius-md: 12px;
 
         /* Gradients */
-        --gradient-hero: linear-gradient(135deg, #C62828, #E65100);
+        --gradient-hero: linear-gradient(135deg, #A8135A, #6B1D5E);
         --gradient-dark: linear-gradient(180deg, #1A1A2E, #2D2D44);
       }
 
@@ -374,7 +374,7 @@ const ogImage = image ?? `${siteUrl}/og-default.png`;
       .btn-primary:hover {
         background: var(--color-primary-dark);
         border-color: var(--color-primary-dark);
-        box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+        box-shadow: 0 4px 12px rgba(168, 19, 90, 0.3);
       }
 
       .btn-secondary {
